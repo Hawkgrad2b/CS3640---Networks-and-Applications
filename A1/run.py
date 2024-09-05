@@ -1,6 +1,7 @@
 #run.py python script file for assingment 1
-# Used 
-
+# Used the websites https://docs.python.org/3/library/subprocess.html and
+# https://www.geeksforgeeks.org/python-subprocess-module/ 
+# for better understanding on subprocess module
 
 import subprocess
 import sys
