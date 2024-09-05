@@ -1,0 +1,65 @@
+hawkid: kprasai
+Name: Krisham Prasai
+*****
+Command: date
+Thu Sep  5 08:05:01 PM UTC 2024
+
+*****
+Command: whoami
+kprasai
+
+*****
+Command: ifconfig
+enp0s1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.64.5  netmask 255.255.255.0  broadcast 192.168.64.255
+        inet6 fe80::5003:8cff:fef0:1c26  prefixlen 64  scopeid 0x20<link>
+        inet6 fda5:ce2e:ec53:b38:5003:8cff:fef0:1c26  prefixlen 64  scopeid 0x0<global>
+        inet6 fda5:ce2e:ec53:b38:f7b4:f668:195b:9915  prefixlen 64  scopeid 0x0<global>
+        ether 52:03:8c:f0:1c:26  txqueuelen 1000  (Ethernet)
+        RX packets 72211  bytes 102083092 (102.0 MB)
+        RX errors 0  dropped 15491320  overruns 0  frame 0
+        TX packets 5964  bytes 494803 (494.8 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 305  bytes 29019 (29.0 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 305  bytes 29019 (29.0 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+*****
+Command: ping sparta.cs.uiowa.edu -c 10
+PING vitalstatistix.cs.uiowa.edu (128.255.96.116) 56(84) bytes of data.
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=1 ttl=44 time=21.0 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=2 ttl=44 time=26.6 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=3 ttl=44 time=26.9 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=4 ttl=44 time=25.4 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=5 ttl=44 time=30.1 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=6 ttl=44 time=29.0 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=7 ttl=44 time=27.6 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=8 ttl=44 time=29.0 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=9 ttl=44 time=30.3 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=10 ttl=44 time=34.1 ms
+
+--- vitalstatistix.cs.uiowa.edu ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9101ms
+rtt min/avg/max/mdev = 21.017/27.998/34.108/3.284 ms
+
+*****
+[Error] traceroute sparta.cs.uiowa.edu -m 10 failed: traceroute to vitalstatistix.cs.uiowa.edu (128.255.96.116), 10 hops max
+  1   192.168.64.1  2.025ms  1.325ms  0.955ms 
+  2   192.168.1.1  4.234ms  3.290ms  3.414ms 
+  3   100.65.0.1  9.961ms  6.318ms  6.649ms 
+  4   207.191.217.64  8.171ms  9.729ms  9.472ms 
+  5   207.191.217.53  6.937ms  7.114ms  6.710ms 
+  6   100.64.0.107  5.958ms  6.028ms  5.542ms 
+  7   207.191.218.9  6.983ms  8.728ms  7.883ms 
+  8   207.191.217.52  17.603ms  17.696ms  19.724ms 
+  9   207.191.217.97  16.499ms  16.607ms  16.548ms 
+ 10   208.115.136.7  16.923ms  16.171ms  15.401ms 
+
+*****
