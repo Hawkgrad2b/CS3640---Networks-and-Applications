@@ -15,7 +15,7 @@ with open(output_file_path, "w") as f:
 
 def execute_command(command):
     try:
-        result = subprocess.run(command, shell=False, capture_output=True, text=True)
+        result = subprocess.run(command, capture_output=True, text=True)
 
         with open(output_file_path, "a") as f:
             f.write(f"\nCommand: {' '.join(command)}\n")
@@ -46,8 +46,8 @@ commands = [
         ["whoami"],
         ["ifconfig"],
         ["ping", input_target, "-c","10"],
-        ["traceroute", input_target, "-m","10"]
-]
+        ["traceroute", input_target, "-m","10"],
+        ]
 
 for command in commands:
     execute_command(command)
