@@ -2,7 +2,7 @@ wplucas
 William Lucas
 
 Command: date
-Thu Sep  5 08:05:19 PM UTC 2024
+Thu Sep  5 08:52:09 PM UTC 2024
 
 *****
 
@@ -17,53 +17,53 @@ enp0s3: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet6 fd62:579f:1fb9:9042:a00:27ff:fea3:d2c6  prefixlen 64  scopeid 0x0<global>
         inet6 fe80::a00:27ff:fea3:d2c6  prefixlen 64  scopeid 0x20<link>
         ether 08:00:27:a3:d2:c6  txqueuelen 1000  (Ethernet)
-        RX packets 5630  bytes 433833 (433.8 KB)
+        RX packets 17356  bytes 1374457 (1.3 MB)
         RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 2610  bytes 342763 (342.7 KB)
+        TX packets 9484  bytes 1321591 (1.3 MB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
 lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         inet 127.0.0.1  netmask 255.0.0.0
         inet6 ::1  prefixlen 128  scopeid 0x10<host>
         loop  txqueuelen 1000  (Local Loopback)
-        RX packets 100  bytes 7968 (7.9 KB)
+        RX packets 150  bytes 12057 (12.0 KB)
         RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 100  bytes 7968 (7.9 KB)
+        TX packets 150  bytes 12057 (12.0 KB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
 
 *****
 
-Command: ping google.com -c 10
-PING google.com (142.250.190.14) 56(84) bytes of data.
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=1 ttl=112 time=22.0 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=2 ttl=112 time=35.0 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=3 ttl=112 time=14.8 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=4 ttl=112 time=14.0 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=5 ttl=112 time=14.0 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=6 ttl=112 time=18.3 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=7 ttl=112 time=15.8 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=8 ttl=112 time=17.0 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=9 ttl=112 time=15.3 ms
-64 bytes from ord37s32-in-f14.1e100.net (142.250.190.14): icmp_seq=10 ttl=112 time=17.1 ms
+Command: ping sparta.cs.uiowa.edu -c 10
+PING vitalstatistix.cs.uiowa.edu (128.255.96.116) 56(84) bytes of data.
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=1 ttl=45 time=20.6 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=2 ttl=45 time=22.2 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=3 ttl=45 time=22.0 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=4 ttl=45 time=20.4 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=5 ttl=45 time=21.9 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=6 ttl=45 time=21.0 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=7 ttl=45 time=21.5 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=8 ttl=45 time=20.7 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=9 ttl=45 time=19.3 ms
+64 bytes from vitalstatistix.cs.uiowa.edu (128.255.96.116): icmp_seq=10 ttl=45 time=21.4 ms
 
---- google.com ping statistics ---
-10 packets transmitted, 10 received, 0% packet loss, time 9677ms
-rtt min/avg/max/mdev = 13.986/18.318/35.016/6.007 ms
+--- vitalstatistix.cs.uiowa.edu ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 10007ms
+rtt min/avg/max/mdev = 19.345/21.105/22.235/0.832 ms
 
 *****
 
-Command: traceroute google.com -m 10
-traceroute to google.com (142.250.190.14), 10 hops max
-  1   192.168.1.1  1.853ms  2.458ms  3.337ms 
-  2   100.65.0.1  5.261ms  6.378ms  6.573ms 
-  3   207.191.217.64  6.562ms  7.665ms  9.172ms 
-  4   207.191.217.57  7.038ms  6.391ms  8.629ms 
-  5   100.64.0.107  5.329ms  5.558ms  4.435ms 
-  6   207.191.218.9  5.780ms  6.152ms  4.922ms 
-  7   207.191.217.52  16.724ms  17.654ms  18.450ms 
-  8   207.191.217.97  14.258ms  13.398ms  14.654ms 
-  9   216.66.73.141  14.962ms  *  * 
- 10   *  *  * 
+Command: traceroute sparta.cs.uiowa.edu -m 10
+traceroute to vitalstatistix.cs.uiowa.edu (128.255.96.116), 10 hops max
+  1   192.168.1.1  2.226ms  2.278ms  3.340ms 
+  2   100.65.0.1  5.393ms  7.574ms  5.594ms 
+  3   207.191.217.62  6.838ms  7.934ms  8.049ms 
+  4   207.191.217.53  5.455ms  5.666ms  5.806ms 
+  5   100.64.0.107  4.576ms  6.085ms  4.959ms 
+  6   207.191.218.9  6.167ms  6.168ms  6.069ms 
+  7   207.191.217.52  14.974ms  21.800ms  18.742ms 
+  8   207.191.217.97  14.765ms  15.218ms  13.985ms 
+  9   208.115.136.7  13.944ms  13.946ms  14.170ms 
+ 10   216.56.50.74  20.088ms  19.904ms  20.142ms 
 
 *****
