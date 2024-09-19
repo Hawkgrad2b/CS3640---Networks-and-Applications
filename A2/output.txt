@@ -1,0 +1,16 @@
+Krisham Prasai 01411050
+Server listening on port 8080
+New connection from ('127.0.0.1', 54852)
+Recieved from ('127.0.0.1', 54852): hello darkness my old friend
+New connection from ('127.0.0.1', 41286)
+New connection from ('127.0.0.1', 41302)
+Recieved from ('127.0.0.1', 41302): just got a new updaugh tshirt
+Recieved from ('127.0.0.1', 41286): whats 'updaugh'??
+Recieved from ('127.0.0.1', 41302): nothing much, hbu
+Client ('127.0.0.1', 41286) disconnected
+Recieved from ('127.0.0.1', 41302): xD
+Client ('127.0.0.1', 41302) disconnected
+Recieved from ('127.0.0.1', 54852): you guys still there?
+Recieved from ('127.0.0.1', 54852): all alone again
+Recieved from ('127.0.0.1', 54852): :(
+Client ('127.0.0.1', 54852) disconnected
