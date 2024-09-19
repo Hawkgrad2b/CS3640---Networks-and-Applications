@@ -1,2 +1,54 @@
 wplucas
-William LucasSocket has been successfully createdSocket has been binded to port 5000 on the local hostsocket is listening
+William Lucas
+[SERVER] Socket has been successfully created
+[SERVER] Server is starting on localhost from port 5000
+[SERVER] Server is listening...
+[CLIENT] Connecting to localhost on port 5000
+[CLIENT] Connected to localhost on port 5000
+[SERVER] New connection established with ('127.0.0.1', 36232)
+[SERVER] New thread from ('127.0.0.1', 36232)
+[SERVER] Started thread with ('127.0.0.1', 36232)
+[CLIENT] Connecting to localhost on port 5000
+[SERVER] New connection established with ('127.0.0.1', 36234)
+[CLIENT] Connected to localhost on port 5000
+[SERVER] New thread from ('127.0.0.1', 36234)
+[SERVER] Started thread with ('127.0.0.1', 36234)
+[CLIENT] Connecting to localhost on port 5000
+[SERVER] New connection established with ('127.0.0.1', 36242)
+[SERVER] New thread from ('127.0.0.1', 36242)
+[SERVER] Started thread with ('127.0.0.1', 36242)
+[CLIENT] Connected to localhost on port 5000
+[SERVER] Recieved from ('127.0.0.1', 36232): client 1
+Server: ('127.0.0.1', 36232) says: client 1
+Server: ('127.0.0.1', 36232) says: client 1
+[SERVER] Recieved from ('127.0.0.1', 36234): client 2
+Server: ('127.0.0.1', 36234) says: client 2
+Server: ('127.0.0.1', 36234) says: client 2
+[SERVER] Recieved from ('127.0.0.1', 36242): client 3
+Server: ('127.0.0.1', 36242) says: client 3
+Server: ('127.0.0.1', 36242) says: client 3
+[CLIENT] A client is disconnecting from server...
+[SERVER] Recieved from ('127.0.0.1', 36232): A client is disconnected from the server
+[CLIENT] A client has disconnected from the server
+Server: ('127.0.0.1', 36232) says: A client is disconnected from the server
+Server: ('127.0.0.1', 36232) says: A client is disconnected from the server
+[CLIENT] A client is disconnecting from server...
+[CLIENT] A client has disconnected from the server
+[SERVER] Recieved from ('127.0.0.1', 36234): A client is disconnected from the server
+Server: ('127.0.0.1', 36234) says: A client is disconnected from the server
+[CLIENT] Error recieving message from server
+[SERVER] Client ('127.0.0.1', 36232) disconnected
+Server: ('127.0.0.1', 36234) says: A client is disconnected from the server
+[SERVER] Connection with ('127.0.0.1', 36232) is closed
+[CLIENT] Client connection closed
+[CLIENT] A client is disconnecting from server...
+[CLIENT] A client has disconnected from the server
+[SERVER] Recieved from ('127.0.0.1', 36242): A client is disconnected from the server
+Server: ('127.0.0.1', 36242) says: A client is disconnected from the server
+[CLIENT] Error recieving message from server
+[SERVER] Client ('127.0.0.1', 36234) disconnected
+[SERVER] Connection with ('127.0.0.1', 36234) is closed
+[CLIENT] Client connection closed
+[SERVER] Client ('127.0.0.1', 36242) disconnected
+[SERVER] Connection with ('127.0.0.1', 36242) is closed
+[SERVER] Connection with ('127.0.0.1', 36242) has been closed
