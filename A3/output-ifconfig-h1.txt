@@ -1,0 +1,1 @@
+TBI: the output of ifconfig on h1 should be logged here
