@@ -16,9 +16,36 @@ from mininet.link import TCLink # traffic control links (set bandwidth limits)
 from mininet.log import setLogLevel # for logging information
 from mininet.util import dumpNodeConnections # dump connections between nodes
 
+class BottleNeckTopology(Topo):
+
+    def build(self, bw_bottleneck, bw_other):
+        # adding two client nodes
+        h1 = self.addHost('h1')
+        h2 = self.addHost('h2')
+        # adding two server nodes
+        h3 = self.addHost('h3')
+        h4 = self.addHost('h4')
+
+        # addings the two switches
+        s1 = self.addSwitch('s1')
+        s2 = self.addSwitch('s2')
+
+        # add the links connecting the devices
+        self.addLink(h1, s1, bw=bw_other)
+        self.addLink(h2, s1, bw=bw_other)
+        self.addLink(s1, s2, bw=bw_bottleneck) # bottlneck link
+        self.addLink(s2, h3, bw=bw_other)
+        self.addLink(s2, h4, bw=bw_other)
+
+
 def Create_Network(bw_bottleneck, bw_other, sim_time):
     #in progress (-wplucas)
-    print()
+    topo = BottleNeckTopology()
+    net = Mininet(Topo= topo, link= TCLink)
+
+    net.start()
+
+    net.stop()
 
 
 
@@ -43,3 +70,5 @@ if __name__ == "__main__":
                          'specified bottleneck bandwidth')
     
     Create_Network(args.bw_bottleneck, args.bw_other, args.time)
+
+
