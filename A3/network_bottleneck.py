@@ -2,6 +2,9 @@
 # Setup a simple network topology using two client nodes, two server nodes,
 # and two switches using Mininet
 
+# use for clearing mininet state
+import os
+
 # use argparse to handle command-line arguments
 import argparse
 
@@ -36,21 +39,55 @@ class BottleNeckTopology(Topo):
         self.addLink(s1, s2, bw=bw_bottleneck) # bottlneck link
         self.addLink(s2, h3, bw=bw_other)
         self.addLink(s2, h4, bw=bw_other)
+        
 
-
-def Create_Network(bw_bottleneck, bw_other, sim_time):
+def run_topology_tests(bw_bottleneck, bw_other):
     #in progress (-wplucas)
     topo = BottleNeckTopology()
     net = Mininet(Topo= topo, link= TCLink)
 
+    # Start the network
     net.start()
 
+    # Record passed in parameters
+    with open('output-network-config.txt', 'w') as f:
+        f.write(f'bottleneck bandwith: {bw_bottleneck} Mbps\n')
+        f.write(f'Other links bandwith: {bw_other} Mbps\n')
+
+    # Get the two client nodes
+    h1 = net.get('h1')
+    h2 = net.get('h2')
+
+    # Get the two server nodes
+    h3 = net.get('h3')
+    h4 = net.get('h4')
+
+    hosts = [h1,h2,h3,h4]
+
+    # For each host, use the ifconfig command and record results
+    for index, host in enumerate(hosts, 1):
+        ifconfig_results = host.cmd('ifconfig')
+        with open(f"output-ifconfig-h{index}.txt", 'w' ) as f:
+            f.write(ifconfig_results)
+
+    # For each host, use the ping command and record results
+    for index, host in enumerate(hosts, 1):
+        ping_result = f'host {index}:'
+        for target_host in hosts:
+            if host != target_host:
+                ping_result += host.cmd(f'ping {target_host.IP()}')
+
+        with open(f"output-ping-h{index}.txt", 'w') as f:
+            f.write(ping_result)
+
+    # Stop network after all tests have been run 
     net.stop()
 
 
-
-
 if __name__ == "__main__":
+    # Clearing mininet state between executions
+    os.system('sudo mn -c')
+    
     # Intialize the argparse parser to take the command-line args
     parser = argparse.ArgumentParser(description="Network Bottleneck parser")
 
@@ -69,6 +106,6 @@ if __name__ == "__main__":
         raise ValueError('The bandwidth for other links must be higher than the ' +
                          'specified bottleneck bandwidth')
     
-    Create_Network(args.bw_bottleneck, args.bw_other, args.time)
+    run_topology_tests(args.bw_bottleneck, args.bw_other)
 
 
