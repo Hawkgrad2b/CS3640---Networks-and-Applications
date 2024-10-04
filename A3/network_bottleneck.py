@@ -83,8 +83,11 @@ def run_topology_tests(bw_bottleneck, bw_other):
             f.write(ping_result + '\n')
 
     # Stop network after all tests have been run 
-    net.stop()
+    return net
 
+#
+def run_pref_tests():
+    pass
 
 if __name__ == "__main__":
     # Clearing mininet state between executions
@@ -108,4 +111,8 @@ if __name__ == "__main__":
         raise ValueError('The bandwidth for other links must be higher than the ' +
                          'specified bottleneck bandwidth')
     
-    run_topology_tests(args.bw_bottleneck, args.bw_other)
+    net = run_topology_tests(args.bw_bottleneck, args.bw_other)
+
+    run_perf_tests(net, bottleneck_bw, other_bw)
+
+    net.stop()
