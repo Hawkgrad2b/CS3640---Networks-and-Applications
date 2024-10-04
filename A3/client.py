@@ -26,7 +26,7 @@ def main():
 
     print(f'Starting iPerf3 client from {args.ip}:{args.port} to {args.server_ip}:{args.port} using {args.test.upper()}')
 
-    # Run the client test
+    # Running the client test
     result = client.run()
 
     if result.error:

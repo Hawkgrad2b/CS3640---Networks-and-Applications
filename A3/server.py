@@ -16,7 +16,7 @@ def main():
 
     print(f'Starting iPerf3 server on {args.ip}:{args.port}')
 
-    # Run the server (blocking call)
+    # Run the server
     while True:
         result = server.run()
         if result.error:
