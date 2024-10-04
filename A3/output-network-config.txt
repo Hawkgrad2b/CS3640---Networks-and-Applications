@@ -1,1 +1,2 @@
-TBI: details of configuration will be logged here
+bottleneck bandwith: 20 Mbps
+Other links bandwith: 100 Mbps

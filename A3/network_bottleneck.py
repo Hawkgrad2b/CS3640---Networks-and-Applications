@@ -43,8 +43,8 @@ class BottleNeckTopology(Topo):
 
 def run_topology_tests(bw_bottleneck, bw_other):
     #in progress (-wplucas)
-    topo = BottleNeckTopology()
-    net = Mininet(Topo= topo, link= TCLink)
+    topo = BottleNeckTopology(bw_bottleneck, bw_other)
+    net = Mininet(topo= topo, link= TCLink)
 
     # Start the network
     net.start()
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # bandwidth (for bottleneck link and other links) and time
     parser.add_argument('-bw_bottleneck', type=int, default=10,
                         help='Bandwidth (Mbps) for the bottleneck link (default is 10Mbps)')
-    parser.add_argument('bw_other', type=int, default=100,
+    parser.add_argument('-bw_other', type=int, default=100,
                         help='Bandwidth (Mbps) for other links (default is 100Mbps)')
     parser.add_argument('-time', type=int, default=10,
                         help='Duration (seconds) of traffic simulation. (default is 10 seconds)')
@@ -107,5 +107,3 @@ if __name__ == "__main__":
                          'specified bottleneck bandwidth')
     
     run_topology_tests(args.bw_bottleneck, args.bw_other)
-
-

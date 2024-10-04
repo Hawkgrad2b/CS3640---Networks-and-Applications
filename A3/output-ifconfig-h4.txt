@@ -1,1 +1,18 @@
-TBI: the output of ifconfig on h4 should be logged here
+h4-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.0.4  netmask 255.0.0.0  broadcast 10.255.255.255
+        inet6 fe80::141b:d8ff:fe7e:3c2f  prefixlen 64  scopeid 0x20<link>
+        ether 16:1b:d8:7e:3c:2f  txqueuelen 1000  (Ethernet)
+        RX packets 5  bytes 442 (442.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 3  bytes 266 (266.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
