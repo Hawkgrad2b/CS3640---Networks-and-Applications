@@ -34,17 +34,19 @@ class BottleNeckTopology(Topo):
         s2 = self.addSwitch('s2')
 
         # add the links connecting the devices
-        self.addLink(h1, s1, bw=bw_other)
-        self.addLink(h2, s1, bw=bw_other)
-        self.addLink(s1, s2, bw=bw_bottleneck) # bottlneck link
-        self.addLink(s2, h3, bw=bw_other)
-        self.addLink(s2, h4, bw=bw_other)
+        # added parameters for limiting the rate-to-quantum variable
+        self.addLink(h1, s1, bw=bw_other, cls=TCLink)
+        self.addLink(h2, s1, bw=bw_other, cls=TCLink)
+        
+        self.addLink(s1, s2, bw=bw_bottleneck, cls=TCLink) # bottlneck link
+        self.addLink(s2, h3, bw=bw_other, cls=TCLink)
+        self.addLink(s2, h4, bw=bw_other, cls=TCLink)
         
 
 def run_topology_tests(bw_bottleneck, bw_other):
     #in progress (-wplucas)
     topo = BottleNeckTopology(bw_bottleneck, bw_other)
-    net = Mininet(topo= topo, link= TCLink)
+    net = Mininet(topo=topo, link=TCLink)
 
     # Start the network
     net.start()
@@ -72,13 +74,13 @@ def run_topology_tests(bw_bottleneck, bw_other):
 
     # For each host, use the ping command and record results
     for index, host in enumerate(hosts, 1):
-        ping_result = f'host {index}:'
+        ping_result = f'host {index}:\n'
         for target_host in hosts:
             if host != target_host:
-                ping_result += host.cmd(f'ping {target_host.IP()}')
+                ping_result += host.cmd(f'ping -c 4 {target_host.IP()}')
 
         with open(f"output-ping-h{index}.txt", 'w') as f:
-            f.write(ping_result)
+            f.write(ping_result + '\n')
 
     # Stop network after all tests have been run 
     net.stop()
