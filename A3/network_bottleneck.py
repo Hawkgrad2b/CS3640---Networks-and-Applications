@@ -78,8 +78,9 @@ def run_topology_tests(bw_bottleneck, bw_other):
             if host != target_host:
                 ping_result += host.cmd(f'ping -c 4 {target_host.IP()}')
 
+        # write results to specific ping text file 
         with open(f"output-ping-h{index}.txt", 'w') as f:
-            f.write(ping_result + '\n')
+            f.write('\n' + ping_result)
 
     # Stop network after all tests have been run 
     return net
@@ -90,6 +91,41 @@ def run_pref_tests(net, bw_bottleneck, bw_other):
     h2 = net.get('h2')
     h3 = net.get('h3')
     h4 = net.get('h4')
+
+    # Initialize TCP test from h1 to h3
+    tcp_client = iperf3.Client()
+    tcp_client.bind_address = h1.IP()
+    tcp_client.port = 5001
+    tcp_client.server_hostname = h3.IP()
+    tcp_client.duration = 60
+    tcp_client.json_output = True
+
+    print(f'Starting TCP test from {h1.IP()} to {h3.IP()}')
+    tcp_result = tcp_client.run()
+
+    # Save TCP result to JSON file
+    tcp_filename= f'output-tcp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
+    with open(tcp_filename, 'w') as f:
+        f.write(tcp_result.text)
+    print(f'TCP results saved to {tcp_filename}')
+
+    # Initialize UDP test from h2 to h4
+    udp_client = iperf3.Client()
+    udp_client.bind_address = h2.IP()
+    udp_client.port = 5002
+    udp_client.server_hostname = h4.IP()
+    udp_client.duration = 60
+    udp_client.protocol = 'udp'
+    udp_client.json_output = True
+
+    print(f'Starting UDP test from {h2.IP()} to {h4.IP()}')
+    udp_result = udp_client.run()
+
+    # Save UDP result to JSON file
+    udp_filename= f'output-udp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
+    with open(udp_filename, 'w') as f:
+        f.write(udp_result.txt)
+    print(f'UDP results saved to {udp_filename}')
 
     # Initialize TCP test from h1 to h3
     tcp_client = iperf3.Client()
