@@ -13,11 +13,12 @@ import subprocess
 
 # import all necessary Mininet modules
 from mininet.net import Mininet # core to create network
-from mininet.node import Node, OVSSwitch # nodes (hosts, switches)
 from mininet.topo import Topo # define network topology
 from mininet.link import TCLink # traffic control links (set bandwidth limits)
-from mininet.log import setLogLevel # for logging information
-from mininet.util import dumpNodeConnections # dump connections between nodes
+
+# from mininet.log import setLogLevel # for logging information
+# from mininet.node import Node, OVSSwitch # nodes (hosts, switches)
+# from mininet.util import dumpNodeConnections # dump connections between nodes
 
 class BottleNeckTopology(Topo):
 
@@ -44,11 +45,9 @@ class BottleNeckTopology(Topo):
         
 
 def run_topology_tests(bw_bottleneck, bw_other):
-    #in progress (-wplucas)
+    # Build the topology and start the network
     topo = BottleNeckTopology(bw_bottleneck, bw_other)
     net = Mininet(topo=topo, link=TCLink)
-
-    # Start the network
     net.start()
 
     # Record passed in parameters
@@ -85,9 +84,47 @@ def run_topology_tests(bw_bottleneck, bw_other):
     # Stop network after all tests have been run 
     return net
 
-#
-def run_pref_tests():
-    pass
+def run_pref_tests(net, bw_bottleneck, bw_other):
+    #Get the client and server nodes
+    h1 = net.get('h1')
+    h2 = net.get('h2')
+    h3 = net.get('h3')
+    h4 = net.get('h4')
+
+    # Initialize TCP test from h1 to h3
+    tcp_client = iperf3.Client()
+    tcp_client.bind_address = h1.IP()
+    tcp_client.port = 5001
+    tcp_client.server_hostname = h3.IP()
+    tcp_client.duration = 60
+    tcp_client.json_output = True
+
+    print(f'Starting TCP test from {h1.IP()} to {h3.IP()}')
+    tcp_result = tcp_client.run()
+
+    # Save TCP result to JSON file
+    tcp_filename= f'output-tcp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
+    with open(tcp_filename, 'w') as f:
+        f.write(tcp_result.text)
+    print(f'TCP results saved to {tcp_filename}')
+
+    # Initialize UDP test from h2 to h4
+    udp_client = iperf3.Client()
+    udp_client.bind_address = h2.IP()
+    udp_client.port = 5002
+    udp_client.server_hostname = h4.IP()
+    udp_client.duration = 60
+    udp_client.protocol = 'udp'
+    udp_client.json_output = True
+
+    print(f'Starting UDP test from {h2.IP()} to {h4.IP()}')
+    udp_result = udp_client.run()
+
+    # Save UDP result to JSON file
+    udp_filename= f'output-udp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
+    with open(udp_filename, 'w') as f:
+        f.write(udp_result.txt)
+    print(f'UDP results saved to {udp_filename}')
 
 if __name__ == "__main__":
     # Clearing mininet state between executions
@@ -113,6 +150,6 @@ if __name__ == "__main__":
     
     net = run_topology_tests(args.bw_bottleneck, args.bw_other)
 
-    run_perf_tests(net, bottleneck_bw, other_bw)
+    run_perf_tests(net, args.bw_bottleneck, args.bw_other)
 
     net.stop()
