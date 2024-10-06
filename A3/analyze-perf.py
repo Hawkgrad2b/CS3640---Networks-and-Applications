@@ -47,4 +47,5 @@ def main():
     # Plot the results
     plot_results(bottleneck_bandwidths, tcp_throughputs, udp_throughputs)
 
-
+if __name__ == '__main__':
+    main()
