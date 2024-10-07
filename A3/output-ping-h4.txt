@@ -1,29 +1,29 @@
 
 host 4:
 PING 10.0.0.1 (10.0.0.1) 56(84) bytes of data.
-64 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=6.13 ms
-64 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=0.113 ms
-64 bytes from 10.0.0.1: icmp_seq=3 ttl=64 time=0.198 ms
-64 bytes from 10.0.0.1: icmp_seq=4 ttl=64 time=0.095 ms
+64 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=11.6 ms
+64 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=0.116 ms
+64 bytes from 10.0.0.1: icmp_seq=3 ttl=64 time=0.130 ms
+64 bytes from 10.0.0.1: icmp_seq=4 ttl=64 time=0.103 ms
 
 --- 10.0.0.1 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3110ms
-rtt min/avg/max/mdev = 0.095/1.634/6.131/2.596 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3087ms
+rtt min/avg/max/mdev = 0.103/2.985/11.592/4.969 ms
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
-64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=12.2 ms
-64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.173 ms
-64 bytes from 10.0.0.2: icmp_seq=3 ttl=64 time=0.107 ms
-64 bytes from 10.0.0.2: icmp_seq=4 ttl=64 time=0.185 ms
+64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=13.3 ms
+64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.152 ms
+64 bytes from 10.0.0.2: icmp_seq=3 ttl=64 time=0.139 ms
+64 bytes from 10.0.0.2: icmp_seq=4 ttl=64 time=0.117 ms
 
 --- 10.0.0.2 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3381ms
-rtt min/avg/max/mdev = 0.107/3.164/12.194/5.213 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3169ms
+rtt min/avg/max/mdev = 0.117/3.423/13.284/5.693 ms
 PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
-64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=4.05 ms
-64 bytes from 10.0.0.3: icmp_seq=2 ttl=64 time=0.104 ms
-64 bytes from 10.0.0.3: icmp_seq=3 ttl=64 time=0.105 ms
-64 bytes from 10.0.0.3: icmp_seq=4 ttl=64 time=0.108 ms
+64 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=10.5 ms
+64 bytes from 10.0.0.3: icmp_seq=2 ttl=64 time=0.112 ms
+64 bytes from 10.0.0.3: icmp_seq=3 ttl=64 time=0.210 ms
+64 bytes from 10.0.0.3: icmp_seq=4 ttl=64 time=0.087 ms
 
 --- 10.0.0.3 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3049ms
-rtt min/avg/max/mdev = 0.104/1.091/4.050/1.707 ms
+4 packets transmitted, 4 received, 0% packet loss, time 3143ms
+rtt min/avg/max/mdev = 0.087/2.716/10.455/4.468 ms
