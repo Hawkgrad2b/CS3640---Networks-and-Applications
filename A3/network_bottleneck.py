@@ -5,6 +5,10 @@
 # use for clearing mininet state
 import os
 
+# used for giving time when starting client and server
+import time
+import json
+
 # use argparse to handle command-line arguments
 import argparse
 
@@ -90,45 +94,57 @@ def run_topology_tests(bw_bottleneck, bw_other):
 
 def run_perf_tests(net, bw_bottleneck, bw_other):
     #Get the client and server nodes
-    h1 = net.get('h1')
-    h2 = net.get('h2')
-    h3 = net.get('h3')
-    h4 = net.get('h4')
+    h1 = net.get('h1') # TCP client
+    h2 = net.get('h2') # UDP client
+    h3 = net.get('h3') # TCP server
+    h4 = net.get('h4') # UDP server 
 
-    # Initialize TCP test from h1 to h3
-    tcp_client = iperf3.Client()
-    tcp_client.bind_address = h1.IP()
-    tcp_client.port = 5001
-    tcp_client.server_hostname = h3.IP()
-    tcp_client.duration = 60
-    tcp_client.json_output = True
-
+    # servers respective IP's
+    client_tcp_ip = h1.IP()
+    client_udp_ip = h2.IP()
+    server_tcp_ip = h3.IP()
+    server_udp_ip = h4.IP()
+    
+    # Start the iPerf3 server's
+    server_tcp = f'sudo $(which python3) server.py -ip {server_tcp_ip} -port 5001'
+    
+    # Start the TCP server
+    tcp_server_start = subprocess.Popen(server_tcp, shell=True)
     print(f'Starting TCP test from {h1.IP()} to {h3.IP()}')
-    tcp_result = tcp_client.run()
+    time.sleep(2)
+
+    tcp_client = f'sudo $(which python3) client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
+    tcp_result = subprocess.run(tcp_client, shell=True)
+
+    tcp_server_start.terminate()
+    time.sleep(1)
 
     # Save TCP result to JSON file
-    tcp_filename= f'output-tcp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
-    with open(tcp_filename, 'w') as f:
-        f.write(tcp_result.text)
-    print(f'TCP results saved to {tcp_filename}')
+        # tcp_filename= f'output-tcp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
+        # with open(tcp_filename, 'w') as f:
+        #     f.write(tcp_result.text)
+        # print(f'TCP results saved to {tcp_filename}')
 
-    # Initialize UDP test from h2 to h4
-    udp_client = iperf3.Client()
-    udp_client.bind_address = h2.IP()
-    udp_client.port = 5002
-    udp_client.server_hostname = h4.IP()
-    udp_client.duration = 60
-    udp_client.protocol = 'udp'
-    udp_client.json_output = True
 
+    # Start the udp server
+    server_udp = f'sudo $(which python3) server.py -ip {server_udp_ip} -port 5002'
+    udp_server_start = subprocess.Popen(server_udp, shell=True)
+    time.sleep(2)
+
+    udp_client = f'sudo $(which python3) client.py -ip {client_udp_ip} -port 5001 -server_ip {server_udp_ip} -test udp'
     print(f'Starting UDP test from {h2.IP()} to {h4.IP()}')
-    udp_result = udp_client.run()
+
+    udp_result = subprocess.run(udp_client, shell=True)
+
+    # close the server
+    udp_server_start.terminate()
+    time.sleep(1)
 
     # Save UDP result to JSON file
-    udp_filename= f'output-udp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
-    with open(udp_filename, 'w') as f:
-        f.write(udp_result.text)
-    print(f'UDP results saved to {udp_filename}')
+        # udp_filename= f'output-udp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
+        # with open(udp_filename, 'w') as f:
+        #     f.write(udp_result.text)
+        # print(f'UDP results saved to {udp_filename}')
 
 
 if __name__ == "__main__":
