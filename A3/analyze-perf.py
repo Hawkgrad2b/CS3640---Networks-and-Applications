@@ -37,8 +37,8 @@ def main():
         subprocess.run(cmd)
 
         # Collect TCP and UDP results
-        tcp_throughput = parse_results(f'output-tcp-{bw_bottleneck}-{bw_other}.json', 'TCP')
-        udp_throughput = parse_results(f'output-udp-{bw_bottleneck}-{bw_other}.json', 'UDP')
+        tcp_throughput = parse_results(f'output-tcp-{bw_bottleneck}-{bw_other}Mbps.json', 'TCP')
+        udp_throughput = parse_results(f'output-udp-{bw_bottleneck}-{bw_other}Mbps.json', 'UDP')
 
         # Append the throughput to the lists
         tcp_throughputs.append(tcp_throughput)
