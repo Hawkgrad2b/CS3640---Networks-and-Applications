@@ -11,6 +11,9 @@ import argparse
 # use subprocess to use system commands like 'ifconfig' and 'ping'
 import subprocess
 
+# use for client and server
+import iperf3
+
 # import all necessary Mininet modules
 from mininet.net import Mininet # core to create network
 from mininet.topo import Topo # define network topology
@@ -85,7 +88,7 @@ def run_topology_tests(bw_bottleneck, bw_other):
     # Stop network after all tests have been run 
     return net
 
-def run_pref_tests(net, bw_bottleneck, bw_other):
+def run_perf_tests(net, bw_bottleneck, bw_other):
     #Get the client and server nodes
     h1 = net.get('h1')
     h2 = net.get('h2')
