@@ -54,7 +54,7 @@ class BottleNeckTopology(Topo):
 def run_topology_tests(bw_bottleneck, bw_other):
     # Build the topology and start the network
     topo = BottleNeckTopology(bw_bottleneck, bw_other)
-    net = Mininet(topo=topo, link=TCLink)
+    net = Mininet(topo=topo, link=TCLink, controller=None)
     net.start()
 
     # Record passed in parameters
