@@ -112,7 +112,7 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     # Start the TCP server
     tcp_server_start = subprocess.Popen(server_tcp, shell=True)
     print(f'Starting TCP test from {h1.IP()} to {h3.IP()}\n')
-    
+    time.sleep(2)
     # create the command-line-argument for starting the TCP client
     tcp_client = f'sudo python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
 
