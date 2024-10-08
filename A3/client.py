@@ -13,7 +13,7 @@ def main():
 
     # Initialize the iPerf3 client
     client = iperf3.Client()
-    client.bind_address = args.ip
+    # client.bind_address = args.ip
     client.port = args.port
     client.server_hostname = args.server_ip
     client.duration = 60  # Set duration to 60 seconds
