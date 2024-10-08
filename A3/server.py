@@ -2,6 +2,7 @@
 
 import argparse
 import iperf3
+import time
 
 def main():
     parser = argparse.ArgumentParser(description='iPerf3 Server Script')
@@ -14,15 +15,20 @@ def main():
     server.bind_address = args.ip
     server.port = args.port
 
-    print(f'Starting iPerf3 server on {args.ip}:{args.port}')
+    print(f'Starting iPerf3 server on {args.ip}:{args.port}\n')
 
     # Run the server
-    while True:
+    max_tries = 5
+    for attempt in range(max_tries):
         result = server.run()
         if result.error:
-            print(f'Error: {result.error}')
+            print(f'Error on attempt {attempt + 1}: {result.error}\n')
+            time.sleep(1)
         else:
-            print('Test completed')
+            print('Test completed\n')
+            break
+    else:
+        print('Max attempts reached. Exiting.')
 
 if __name__ == '__main__':
     main()

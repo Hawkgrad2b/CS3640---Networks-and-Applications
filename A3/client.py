@@ -24,7 +24,7 @@ def main():
     elif args.test == 'udp':
         client.protocol = 'udp'
 
-    print(f'Starting iPerf3 client from {args.ip}:{args.port} to {args.server_ip}:{args.port} using {args.test.upper()}')
+    print(f'Starting iPerf3 client from {args.ip}:{args.port} to {args.server_ip}:{args.port} using {args.test.upper()}\n')
 
     # Running the client test
     result = client.run()
@@ -36,7 +36,8 @@ def main():
         filename = f'output-{args.test}-{args.ip}-{args.server_ip}.json'
         with open(filename, 'w') as f:
             f.write(result.text)
-        print(f'Results saved to {filename}')
+        print(f'Results saved to {filename}\n')
 
 if __name__ == '__main__':
     main()
+

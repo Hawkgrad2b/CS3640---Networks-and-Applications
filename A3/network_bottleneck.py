@@ -105,47 +105,45 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     server_tcp_ip = h3.IP()
     server_udp_ip = h4.IP()
     
-    # Start the iPerf3 server's
-    server_tcp = f'sudo $(which python3) server.py -ip {server_tcp_ip} -port 5001'
-    
+    # TCP SetUp
+    # create the command-line-argument to start the TCP Server
+    server_tcp = f'sudo python3 server.py -ip {server_tcp_ip} -port 5001'
+
     # Start the TCP server
     tcp_server_start = subprocess.Popen(server_tcp, shell=True)
-    print(f'Starting TCP test from {h1.IP()} to {h3.IP()}')
-    time.sleep(2)
+    print(f'Starting TCP test from {h1.IP()} to {h3.IP()}\n')
+    
+    # create the command-line-argument for starting the TCP client
+    tcp_client = f'sudo python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
 
-    tcp_client = f'sudo $(which python3) client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
+    # Start the TCP client and run a test and store results 
     tcp_result = subprocess.run(tcp_client, shell=True)
+    print(f'TCP result: {tcp_result}')
 
+    # close the tcp server
     tcp_server_start.terminate()
-    time.sleep(1)
+    tcp_server_start.wait()
 
-    # Save TCP result to JSON file
-        # tcp_filename= f'output-tcp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
-        # with open(tcp_filename, 'w') as f:
-        #     f.write(tcp_result.text)
-        # print(f'TCP results saved to {tcp_filename}')
+    # UDP SetUp
+    # create the command-line-argument to start the UDP Server
+    server_udp = f'sudo python3 server.py -ip {server_udp_ip} -port 5002'
 
-
-    # Start the udp server
-    server_udp = f'sudo $(which python3) server.py -ip {server_udp_ip} -port 5002'
+    # Start the UDP Server
     udp_server_start = subprocess.Popen(server_udp, shell=True)
     time.sleep(2)
+    print(f'Starting UDP test from {h2.IP()} to {h4.IP()}\n')
 
-    udp_client = f'sudo $(which python3) client.py -ip {client_udp_ip} -port 5001 -server_ip {server_udp_ip} -test udp'
-    print(f'Starting UDP test from {h2.IP()} to {h4.IP()}')
+    # create the command-line-argument for starting the UDP client
+    udp_client = f'sudo python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
 
+    # Start the UDP Client and run a test
     udp_result = subprocess.run(udp_client, shell=True)
+    print(f'UDP result: {udp_result}')
 
-    # close the server
+    # close the udp server
     udp_server_start.terminate()
-    time.sleep(1)
-
-    # Save UDP result to JSON file
-        # udp_filename= f'output-udp-{bw_bottleneck}Mbps-{bw_other}Mbps.json'
-        # with open(udp_filename, 'w') as f:
-        #     f.write(udp_result.text)
-        # print(f'UDP results saved to {udp_filename}')
-
+    udp_server_start.wait()
+    
 
 if __name__ == "__main__":
     # Clearing mininet state between executions
