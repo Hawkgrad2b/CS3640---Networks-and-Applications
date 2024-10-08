@@ -117,7 +117,8 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     tcp_client = f'sudo python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
 
     # Start the TCP client and run a test and store results 
-    tcp_result = subprocess.Popen(tcp_client, shell=True)
+    tcp_result = h1.cmd(tcp_client)
+    #tcp_result = subprocess.Popen(tcp_client, shell=True)
     print(f'TCP result: {tcp_result}')
 
     # close the tcp server
@@ -137,7 +138,8 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     udp_client = f'sudo python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
 
     # Start the UDP Client and run a test
-    udp_result = subprocess.Popen(udp_client, shell=True)
+    udp_result = h4.cmd(udp_client)
+    #udp_result = subprocess.Popen(udp_client, shell=True)
     print(f'UDP result: {udp_result}')
 
     # close the udp server
