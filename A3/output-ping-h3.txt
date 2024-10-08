@@ -1,29 +1,29 @@
 
 host 3:
 PING 10.0.0.1 (10.0.0.1) 56(84) bytes of data.
-64 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=8.90 ms
-64 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=0.031 ms
-64 bytes from 10.0.0.1: icmp_seq=3 ttl=64 time=0.143 ms
-64 bytes from 10.0.0.1: icmp_seq=4 ttl=64 time=0.124 ms
+From 10.0.0.3 icmp_seq=1 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=2 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=3 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=4 Destination Host Unreachable
 
 --- 10.0.0.1 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3062ms
-rtt min/avg/max/mdev = 0.031/2.298/8.896/3.809 ms
+4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3057ms
+pipe 4
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
-64 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=7.50 ms
-64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.083 ms
-64 bytes from 10.0.0.2: icmp_seq=3 ttl=64 time=0.115 ms
-64 bytes from 10.0.0.2: icmp_seq=4 ttl=64 time=0.113 ms
+From 10.0.0.3 icmp_seq=1 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=2 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=3 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=4 Destination Host Unreachable
 
 --- 10.0.0.2 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3104ms
-rtt min/avg/max/mdev = 0.083/1.952/7.498/3.201 ms
+4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3055ms
+pipe 4
 PING 10.0.0.4 (10.0.0.4) 56(84) bytes of data.
-64 bytes from 10.0.0.4: icmp_seq=1 ttl=64 time=5.02 ms
-64 bytes from 10.0.0.4: icmp_seq=2 ttl=64 time=7.01 ms
-64 bytes from 10.0.0.4: icmp_seq=3 ttl=64 time=0.131 ms
-64 bytes from 10.0.0.4: icmp_seq=4 ttl=64 time=0.184 ms
+From 10.0.0.3 icmp_seq=1 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=2 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=3 Destination Host Unreachable
+From 10.0.0.3 icmp_seq=4 Destination Host Unreachable
 
 --- 10.0.0.4 ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3060ms
-rtt min/avg/max/mdev = 0.131/3.085/7.008/3.011 ms
+4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3098ms
+pipe 4
