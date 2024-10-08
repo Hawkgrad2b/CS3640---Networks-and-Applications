@@ -93,56 +93,58 @@ def run_topology_tests(bw_bottleneck, bw_other):
     return net
 
 def run_perf_tests(net, bw_bottleneck, bw_other):
-    #Get the client and server nodes
-    h1 = net.get('h1') # TCP client
-    h2 = net.get('h2') # UDP client
-    h3 = net.get('h3') # TCP server
-    h4 = net.get('h4') # UDP server 
+    # Get the client and server nodes
+    h1 = net.get('h1')  # TCP client
+    h2 = net.get('h2')  # UDP client
+    h3 = net.get('h3')  # TCP server
+    h4 = net.get('h4')  # UDP server
 
-    # servers respective IP's
-    client_tcp_ip = h1.IP()
-    client_udp_ip = h2.IP()
+    # Servers' respective IPs
     server_tcp_ip = h3.IP()
     server_udp_ip = h4.IP()
-    
-    # TCP SetUp
-    # create the command-line-argument to start the TCP Server
-    server_tcp = f'sudo python3 server.py -ip {server_tcp_ip} -port 5001'
 
-    # Start the TCP server
-    tcp_server_start = subprocess.Popen(server_tcp, shell=True)
-    print(f'Starting TCP test from {h1.IP()} to {h3.IP()}\n')
-    time.sleep(2)
-    # create the command-line-argument for starting the TCP client
-    tcp_client = f'sudo python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
+    # TCP Test
+    server_tcp_cmd = f'python3 server.py -port 5001'
+    # Start the TCP server on h3
+    server_tcp_proc = h3.popen(server_tcp_cmd)
+    print(f'Started TCP server on {server_tcp_ip}:5001')
 
-    # Start the TCP client and run a test and store results 
-    tcp_result = subprocess.Popen(tcp_client, shell=True)
-    print(f'TCP result: {tcp_result}')
+    time.sleep(2)  # Wait for server to start
 
-    # close the tcp server
-    tcp_server_start.terminate()
-    tcp_server_start.wait()
+    client_tcp_cmd = f'python3 client.py -server_ip {server_tcp_ip} -port 5001 -test tcp'
+    # Start the TCP client on h1
+    client_tcp_proc = h1.popen(client_tcp_cmd)
+    print(f'Started TCP client to {server_tcp_ip}:5001')
 
-    # UDP SetUp
-    # create the command-line-argument to start the UDP Server
-    server_udp = f'sudo python3 server.py -ip {server_udp_ip} -port 5002'
+    # Wait for the client to finish
+    client_tcp_proc.wait()
+    print('TCP test completed')
 
-    # Start the UDP Server
-    udp_server_start = subprocess.Popen(server_udp, shell=True)
-    time.sleep(2)
-    print(f'Starting UDP test from {h2.IP()} to {h4.IP()}\n')
+    # Terminate the server
+    server_tcp_proc.terminate()
+    server_tcp_proc.wait()
 
-    # create the command-line-argument for starting the UDP client
-    udp_client = f'sudo python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
+    # UDP Test
+    server_udp_cmd = f'python3 server.py -port 5002'
+    # Start the UDP server on h4
+    server_udp_proc = h4.popen(server_udp_cmd)
+    print(f'Started UDP server on {server_udp_ip}:5002')
 
-    # Start the UDP Client and run a test
-    udp_result = subprocess.Popen(udp_client, shell=True)
-    print(f'UDP result: {udp_result}')
+    time.sleep(2)  # Wait for server to start
 
-    # close the udp server
-    udp_server_start.terminate()
-    udp_server_start.wait()
+    client_udp_cmd = f'python3 client.py -server_ip {server_udp_ip} -port 5002 -test udp'
+    # Start the UDP client on h2
+    client_udp_proc = h2.popen(client_udp_cmd)
+    print(f'Started UDP client to {server_udp_ip}:5002')
+
+    # Wait for the client to finish
+    client_udp_proc.wait()
+    print('UDP test completed')
+
+    # Terminate the server
+    server_udp_proc.terminate()
+    server_udp_proc.wait()
+
     
 
 if __name__ == "__main__":
