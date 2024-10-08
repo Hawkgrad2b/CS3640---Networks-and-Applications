@@ -106,14 +106,14 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     # TCP Test
     server_tcp_cmd = f'python3 server.py -port 5001'
     # Start the TCP server on h3
-    server_tcp_proc = h3.popen(server_tcp_cmd)
+    h3.popen(server_tcp_cmd)
     print(f'Started TCP server on {server_tcp_ip}:5001')
 
     time.sleep(2)  # Wait for server to start
 
     client_tcp_cmd = f'python3 client.py -server_ip {server_tcp_ip} -port 5001 -test tcp'
     # Start the TCP client on h1
-    client_tcp_proc = h1.popen(client_tcp_cmd)
+    h1.popen(client_tcp_cmd)
     print(f'Started TCP client to {server_tcp_ip}:5001')
 
     # Wait for the client to finish
@@ -127,14 +127,14 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     # UDP Test
     server_udp_cmd = f'python3 server.py -port 5002'
     # Start the UDP server on h4
-    server_udp_proc = h4.popen(server_udp_cmd)
+    h4.popen(server_udp_cmd)
     print(f'Started UDP server on {server_udp_ip}:5002')
 
     time.sleep(2)  # Wait for server to start
 
     client_udp_cmd = f'python3 client.py -server_ip {server_udp_ip} -port 5002 -test udp'
     # Start the UDP client on h2
-    client_udp_proc = h2.popen(client_udp_cmd)
+    h2.popen(client_udp_cmd)
     print(f'Started UDP client to {server_udp_ip}:5002')
 
     # Wait for the client to finish
