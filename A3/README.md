@@ -11,7 +11,7 @@ alanchen
 wplucas: Implemented task one framework. Formatted the results that were put in output files
 
 ### Task 2:
-kprasai: created the run_perf_tests(), server.py, client.py.
-
+kprasai: created the run_perf_tests().
+alachen: created server.py & client.py.
 ### Task 3:
 alachen: created the analyze_perf.py
