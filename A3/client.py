@@ -2,6 +2,7 @@
 
 import argparse
 import iperf3
+import json
 
 def main():
     parser = argparse.ArgumentParser(description='iPerf3 Client Script')
@@ -17,6 +18,7 @@ def main():
     client.port = args.port
     client.server_hostname = args.server_ip
     client.duration = 60  # Set duration to 60 seconds
+    client.json_output = True # Configure to be saved to JSON
 
     if args.test == 'tcp':
         client.protocol = 'tcp'
@@ -31,7 +33,11 @@ def main():
     if result.error:
         print(f'Error: {result.error}')
     else:
-        print(result)
+        # Save the result as a JSON file using json.dump
+        filename = f'output-{args.test}-{args.ip}-{args.server_ip}.json'
+        with open(filename, 'w') as f:
+            json.dump(result.json, f, indent=4)
+        print(f'Results saved to {filename}\n')
 
 if __name__ == '__main__':
     main()
