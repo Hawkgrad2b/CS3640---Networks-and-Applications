@@ -5,7 +5,7 @@ import iperf3
 import time
 # import json
 
-def run_client(server_ip, port, test):
+def run_client(ip, port, server_ip, test):
     # Initialize the iPerf3 client
     client = iperf3.Client()
     # client.bind_address = args.ip
@@ -13,7 +13,7 @@ def run_client(server_ip, port, test):
     client.server_hostname = server_ip
     client.duration = 60  # Set duration to 60 seconds
 
-    print(f'Starting iPerf3 client from {args.ip}:{args.port} to {args.server_ip}:{args.port} using {args.test.upper()}\n')
+    print(f'Starting iPerf3 client from {ip}:{port} to {server_ip}:{port} using {test.upper()}\n')
 
     if test == 'tcp':
         client.protocol = 'tcp'
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     parser.add_argument('-test', type=str, choices=['tcp', 'udp'], required=True, help='Test type: tcp or udp')
     args = parser.parse_args()
 
-    result = run_client(args.server_ip, args.port, args.test)
+    result = run_client(args.ip, args.port, args.server_ip, args.test)
     print(result)
 
 

@@ -101,10 +101,10 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     server_udp_ip = h4.IP()
     
     # TCP SETUP-----------------
-    server_tcp_cmd = f'python3 server.py -ip {server_tcp_ip} -port 5001'
+    server_tcp_cmd = f'sudo -E $(which python3) server.py -ip {server_tcp_ip} -port 5001'
     tcp_server_start = subprocess.Popen(server_tcp_cmd, shell=True)
 
-    tcp_client_cmd = f'python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
+    tcp_client_cmd = f'sudo -E $(which python3) client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
     tcp_result = subprocess.Popen(tcp_client_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
     # Wait for the client to complete and fetch its output
@@ -131,11 +131,11 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     print(f'TCP results written to {tcp_output_filename}')
 
     # UDP SETUP-----------------
-    server_udp_cmd = f'python3 server.py -ip {server_udp_ip} -port 5002'
+    server_udp_cmd = f'sudo -E $(which python3) server.py -ip {server_udp_ip} -port 5002'
     udp_server_start = subprocess.Popen(server_udp_cmd, shell=True)
     time.sleep(2)
 
-    udp_client_cmd = f'python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
+    udp_client_cmd = f'sudo -E $(which python3) client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
     udp_result = subprocess.Popen(udp_client_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
     # Wait for client to complete and fetch
