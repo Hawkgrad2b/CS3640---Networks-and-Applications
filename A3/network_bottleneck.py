@@ -2,23 +2,12 @@
 # Setup a simple network topology using two client nodes, two server nodes,
 # and two switches using Mininet
 
-# use for clearing mininet state
 import os
-
-# used for giving time when starting client and server
 import time
 import json
-
-# use argparse to handle command-line arguments
 import argparse
-
-# use subprocess to use system commands like 'ifconfig' and 'ping'
 import subprocess
-
-# use for client and server
 import iperf3
-
-# import all necessary Mininet modules
 from mininet.net import Mininet # core to create network
 from mininet.topo import Topo # define network topology
 from mininet.link import TCLink # traffic control links (set bandwidth limits)
@@ -38,7 +27,6 @@ class BottleNeckTopology(Topo):
         s2 = self.addSwitch('s2')
 
         # add the links connecting the devices
-        # added parameters for limiting the rate-to-quantum variable
         self.addLink(h1, s1, bw=bw_other, cls=TCLink)
         self.addLink(h2, s1, bw=bw_other, cls=TCLink)
         
@@ -101,22 +89,35 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     server_udp_ip = h4.IP()
     
     # TCP SETUP-----------------
-    server_tcp_cmd = f'sudo -E $(which python3) server.py -ip {server_tcp_ip} -port 5001'
-    tcp_server_start = subprocess.Popen(server_tcp_cmd, shell=True)
+    server_tcp_cmd = f'sudo python3 server.py -ip {server_tcp_ip} -port 5001'
+    try:
+        tcp_server_start = subprocess.Popen(server_tcp_cmd, shell=True)
+    except Exception as e:
+        print(f'Error: {e}')
+        tcp_server_start.terminate()
+        exit(1)
+    time.sleep(2)
 
-    tcp_client_cmd = f'sudo -E $(which python3) client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
+    tcp_client_cmd = f'sudo python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
     tcp_result = subprocess.Popen(tcp_client_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
     # Wait for the client to complete and fetch its output
-    tco_output, tcp_error = tcp_result.communicate()
+    tcp_output, tcp_error = tcp_result.communicate()
     tcp_server_start.terminate()
     if tcp_error:
         print(f"TCP client error: {tcp_error.decode()}")
 
     # Extract data from TCP result
-    tcp_data = eval(tcp_output.decode().strip()) # Convert str to dict
-    total_bytes_sent_tcp = tcp_data['sent_bytes']
-    total_bytes_received_tcp = tcp_data['received_bytes']
+    try:
+        tcp_data = json.loads(tcp_output.decode().strip())
+    except Exception as e:
+        print("Failed to decode JSON:", e)
+        print("TCP Output:", tcp_output.decode().strip())
+        exit(1) # Terminate whole script
+
+    total_bytes_sent_tcp = tcp_data.get('sent_bytes', 0)
+    total_bytes_received_tcp = tcp_data.get('received_bytes', 0)
+    
     # Create and write to the TCP output JSON file
     tcp_output_filename = f'output-tcp-{bw_bottleneck}-{bw_other}.json'
     tcp_output_data = {
@@ -130,12 +131,18 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
         json.dump(tcp_output_data, f, indent=4)
     print(f'TCP results written to {tcp_output_filename}')
 
+    
     # UDP SETUP-----------------
-    server_udp_cmd = f'sudo -E $(which python3) server.py -ip {server_udp_ip} -port 5002'
-    udp_server_start = subprocess.Popen(server_udp_cmd, shell=True)
+    server_udp_cmd = f'sudo python3 server.py -ip {server_udp_ip} -port 5002'
+    try:
+        udp_server_start = subprocess.Popen(server_udp_cmd, shell=True)
+    except Exception as e:
+        print(f'Error: {e}')
+        tcp_server_start.terminate()
+        exit(1)
     time.sleep(2)
 
-    udp_client_cmd = f'sudo -E $(which python3) client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
+    udp_client_cmd = f'sudo python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
     udp_result = subprocess.Popen(udp_client_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
     # Wait for client to complete and fetch
@@ -145,9 +152,16 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
         print(f"UDP client error: {udp_error.decode()}")
     
     # Extract data from UDP result
-    udp_data = eval(udp_output.decode().strip()) # Convert str to dict
-    total_bytes_sent_udp = udp_data['sent_bytes']
-    total_bytes_received_udp = udp_data['received_bytes']
+    try:
+        udp_data = json.loads(udp_output.decode().strip())
+    except Exception as e:
+        print("Failed to decode JSON:", e)
+        print("UDP Output:", tcp_output.decode().strip())
+        exit(1) #Terminate whole script
+    
+    total_bytes_sent_udp = udp_data.get('sent_bytes', 0)
+    total_bytes_received_udp = udp_data('received_bytes', 0)
+    
     # Create and write to the UDP output JSON file
     udp_output_filename = f'output-udp-{bw_bottleneck}-{bw_other}.json'
     udp_output_data = {

@@ -12,10 +12,11 @@ def main():
 
     # Initialize the iPerf3 server
     server = iperf3.Server()
-    server.bind_address = args.ip
+    server.bind_address = '0.0.0.0' # due to binding issue, 10.0.0.x doesnt work
+    #server.bind_address = args.ip
     server.port = args.port
 
-    print(f'Starting iPerf3 server on {args.ip}:{args.port}\n')
+    print(f'Starting iPerf3 server on {server.bind_address} :{args.port}\n')
 
     # Run the server
     max_tries = 5
