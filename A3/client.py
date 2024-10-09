@@ -2,9 +2,35 @@
 
 import argparse
 import iperf3
-import json
+import time
+# import json
 
-def main():
+def run_client(server_ip, port, test):
+    # Initialize the iPerf3 client
+    client = iperf3.Client()
+    # client.bind_address = args.ip
+    client.port = port
+    client.server_hostname = server_ip
+    client.duration = 60  # Set duration to 60 seconds
+
+    print(f'Starting iPerf3 client from {args.ip}:{args.port} to {args.server_ip}:{args.port} using {args.test.upper()}\n')
+
+    if test == 'tcp':
+        client.protocol = 'tcp'
+        result = client.run()
+        return {
+            'sent_bytes': result.sent_bytes,
+            'received_bytes': result.received_bytes,
+        }
+    elif test == 'udp':
+        client.protocol = 'udp'
+        result = client.run()
+        return {
+            'sent_bytes': result.sent_bytes,
+            'received_bytes': result.received_bytes,
+        }
+
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='iPerf3 Client Script')
     parser.add_argument('-ip', type=str, required=True, help='Client IP address')
     parser.add_argument('-port', type=int, required=True, help='Client port number')
@@ -12,33 +38,7 @@ def main():
     parser.add_argument('-test', type=str, choices=['tcp', 'udp'], required=True, help='Test type: tcp or udp')
     args = parser.parse_args()
 
-    # Initialize the iPerf3 client
-    client = iperf3.Client()
-    # client.bind_address = args.ip
-    client.port = args.port
-    client.server_hostname = args.server_ip
-    client.duration = 60  # Set duration to 60 seconds
-    client.json_output = True # Configure to be saved to JSON
+    result = run_client(args.server_ip, args.port, args.test)
+    print(result)
 
-    if args.test == 'tcp':
-        client.protocol = 'tcp'
-    elif args.test == 'udp':
-        client.protocol = 'udp'
-
-    print(f'Starting iPerf3 client from {args.ip}:{args.port} to {args.server_ip}:{args.port} using {args.test.upper()}\n')
-
-    # Running the client test
-    result = client.run()
-
-    if result.error:
-        print(f'Error: {result.error}')
-    else:
-        # Save the result as a JSON file using json.dump
-        filename = f'output-{args.test}-{args.ip}-{args.server_ip}.json'
-        with open(filename, 'w') as f:
-            json.dump(result.json, f, indent=4)
-        print(f'Results saved to {filename}\n')
-
-if __name__ == '__main__':
-    main()
 

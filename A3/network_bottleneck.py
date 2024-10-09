@@ -95,49 +95,72 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     h3 = net.get('h3') # TCP server
     h4 = net.get('h4') # UDP server 
 
-    # servers respective IP's
     client_tcp_ip = h1.IP()
     client_udp_ip = h2.IP()
     server_tcp_ip = h3.IP()
     server_udp_ip = h4.IP()
     
-    # TCP Test
-    # Create the command-line-argument to start the TCP server
-    server_tcp = f'sudo python3 server.py -ip {server_tcp_ip} -port 5001'
-    # Start the TCP server
-    tcp_server_start = subprocess.Popen(server_tcp, shell=True)
-    time.sleep(2)
-    
-    # create the command-line-argument for starting the TCP client
-    tcp_client = f'sudo python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
-    # Start the TCP client and run a test and store results 
-    tcp_result = subprocess.Popen(tcp_client, shell=True)
+    # TCP SETUP-----------------
+    server_tcp_cmd = f'python3 server.py -ip {server_tcp_ip} -port 5001'
+    tcp_server_start = subprocess.Popen(server_tcp_cmd, shell=True)
 
-    # Close the TCP server
+    tcp_client_cmd = f'python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
+    tcp_result = subprocess.Popen(tcp_client_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    
+    # Wait for the client to complete and fetch its output
+    tco_output, tcp_error = tcp_result.communicate()
     tcp_server_start.terminate()
-    tcp_server_start.wait()
+    if tcp_error:
+        print(f"TCP client error: {tcp_error.decode()}")
 
-    # UDP Test
-    # Create the command-line-argument to start the UDP Server
-    server_udp = f'sudo python3 server.py -ip {server_udp_ip} -port 5002'
-    # Start the UDP Server
-    udp_server_start = subprocess.Popen(server_udp, shell=True)
+    # Extract data from TCP result
+    tcp_data = eval(tcp_output.decode().strip()) # Convert str to dict
+    total_bytes_sent_tcp = tcp_data['sent_bytes']
+    total_bytes_received_tcp = tcp_data['received_bytes']
+    # Create and write to the TCP output JSON file
+    tcp_output_filename = f'output-tcp-{bw_bottleneck}-{bw_other}.json'
+    tcp_output_data = {
+        'test_type': 'TCP',
+        'bottleneck_bandwidth': bw_bottleneck,
+        'other_bandwidth': bw_other,
+        'total_bytes_sent': total_bytes_sent_tcp,
+        'total_bytes_received': total_bytes_received_tcp
+    }
+    with open(tcp_output_filename, 'w') as f:
+        json.dump(tcp_output_data, f, indent=4)
+    print(f'TCP results written to {tcp_output_filename}')
+
+    # UDP SETUP-----------------
+    server_udp_cmd = f'python3 server.py -ip {server_udp_ip} -port 5002'
+    udp_server_start = subprocess.Popen(server_udp_cmd, shell=True)
     time.sleep(2)
 
-    # create the command-line-argument for starting the UDP client
-    udp_client = f'sudo python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
-    # Start the UDP Client and run a test
-    udp_result = subprocess.Popen(udp_client, shell=True)
-
-    # Close the UDP server
-    udp_server_start.terminate()
-    udp_server_start.wait()
+    udp_client_cmd = f'python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
+    udp_result = subprocess.Popen(udp_client_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     
-    # Write results to JSON files
-    with open(f'output-tcp-{bw_bottleneck}-{bw_other}.json', 'w') as f:
-        f.write(tcp_result.stdout)
-    with open(f'output-udp-{bw_bottleneck}-{bw_other}.json', 'w') as f:
-        f.write(udp_result.stdout)
+    # Wait for client to complete and fetch
+    udp_output, udp_error = udp_result.communicate()
+    udp_server_start.terminate()
+    if udp_error:
+        print(f"UDP client error: {udp_error.decode()}")
+    
+    # Extract data from UDP result
+    udp_data = eval(udp_output.decode().strip()) # Convert str to dict
+    total_bytes_sent_udp = udp_data['sent_bytes']
+    total_bytes_received_udp = udp_data['received_bytes']
+    # Create and write to the UDP output JSON file
+    udp_output_filename = f'output-udp-{bw_bottleneck}-{bw_other}.json'
+    udp_output_data = {
+        'test_type': 'UDP',
+        'bottleneck_bandwidth': bw_bottleneck,
+        'other_bandwidth': bw_other,
+        'total_bytes_sent': total_bytes_sent_udp,
+        'total_bytes_received': total_bytes_received_udp
+    }
+    with open(udp_output_filename, 'w') as f:
+        json.dump(udp_output_data, f, indent=4)
+    print(f'UDP results written to {udp_output_filename}')
+
 
 if __name__ == "__main__":
     # Clearing mininet state between executions
