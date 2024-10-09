@@ -17,7 +17,6 @@ def main():
     client.port = args.port
     client.server_hostname = args.server_ip
     client.duration = 60  # Set duration to 60 seconds
-    client.json_output = True
 
     if args.test == 'tcp':
         client.protocol = 'tcp'
@@ -32,11 +31,7 @@ def main():
     if result.error:
         print(f'Error: {result.error}')
     else:
-        # Save the result as a JSON file
-        filename = f'output-{args.test}-{args.ip}-{args.server_ip}.json'
-        with open(filename, 'w') as f:
-            f.write(result.text)
-        print(f'Results saved to {filename}\n')
+        print(result)
 
 if __name__ == '__main__':
     main()

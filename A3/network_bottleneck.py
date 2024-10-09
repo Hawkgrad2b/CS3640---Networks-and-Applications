@@ -23,10 +23,6 @@ from mininet.net import Mininet # core to create network
 from mininet.topo import Topo # define network topology
 from mininet.link import TCLink # traffic control links (set bandwidth limits)
 
-# from mininet.log import setLogLevel # for logging information
-# from mininet.node import Node, OVSSwitch # nodes (hosts, switches)
-# from mininet.util import dumpNodeConnections # dump connections between nodes
-
 class BottleNeckTopology(Topo):
 
     def build(self, bw_bottleneck, bw_other):
@@ -105,45 +101,43 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
     server_tcp_ip = h3.IP()
     server_udp_ip = h4.IP()
     
-    # TCP SetUp
-    # create the command-line-argument to start the TCP Server
+    # TCP Test
+    # Create the command-line-argument to start the TCP server
     server_tcp = f'sudo python3 server.py -ip {server_tcp_ip} -port 5001'
-
     # Start the TCP server
     tcp_server_start = subprocess.Popen(server_tcp, shell=True)
-    print(f'Starting TCP test from {h1.IP()} to {h3.IP()}\n')
     time.sleep(2)
+    
     # create the command-line-argument for starting the TCP client
     tcp_client = f'sudo python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
-
     # Start the TCP client and run a test and store results 
     tcp_result = subprocess.Popen(tcp_client, shell=True)
-    print(f'TCP result: {tcp_result}')
 
-    # close the tcp server
+    # Close the TCP server
     tcp_server_start.terminate()
     tcp_server_start.wait()
 
-    # UDP SetUp
-    # create the command-line-argument to start the UDP Server
+    # UDP Test
+    # Create the command-line-argument to start the UDP Server
     server_udp = f'sudo python3 server.py -ip {server_udp_ip} -port 5002'
-
     # Start the UDP Server
     udp_server_start = subprocess.Popen(server_udp, shell=True)
     time.sleep(2)
-    print(f'Starting UDP test from {h2.IP()} to {h4.IP()}\n')
 
     # create the command-line-argument for starting the UDP client
     udp_client = f'sudo python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
-
     # Start the UDP Client and run a test
     udp_result = subprocess.Popen(udp_client, shell=True)
-    print(f'UDP result: {udp_result}')
 
-    # close the udp server
+    # Close the UDP server
     udp_server_start.terminate()
     udp_server_start.wait()
     
+    # Write results to JSON files
+    with open(f'output-tcp-{bw_bottleneck}-{bw_other}.json', 'w') as f:
+        f.write(tcp_result.stdout)
+    with open(f'output-udp-{bw_bottleneck}-{bw_other}.json', 'w') as f:
+        f.write(udp_result.stdout)
 
 if __name__ == "__main__":
     # Clearing mininet state between executions
