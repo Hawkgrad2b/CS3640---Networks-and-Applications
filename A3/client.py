@@ -13,7 +13,7 @@ def run_client(ip, port, server_ip, test):
     client.server_hostname = server_ip
     client.duration = 60  # Set duration to 60 seconds
 
-    print(f'Starting iPerf3 client from {ip}:{port} to {client.server_hostname}:{port} using {test.upper()}\n')
+    #print(f'Starting iPerf3 client from {ip}:{port} to {client.server_hostname}:{port} using {test.upper()}\n')
 
     if test == 'tcp':
         client.protocol = 'tcp'

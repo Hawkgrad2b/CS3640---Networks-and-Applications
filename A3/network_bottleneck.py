@@ -11,6 +11,9 @@ import iperf3
 from mininet.net import Mininet # core to create network
 from mininet.topo import Topo # define network topology
 from mininet.link import TCLink # traffic control links (set bandwidth limits)
+from mininet.cli import CLI
+from mininet.util import dumpNodeConnections
+from mininet.node import OVSSwitch
 
 class BottleNeckTopology(Topo):
 
@@ -21,19 +24,17 @@ class BottleNeckTopology(Topo):
         # adding two server nodes
         h3 = self.addHost('h3')
         h4 = self.addHost('h4')
-
         # addings the two switches
-        s1 = self.addSwitch('s1')
-        s2 = self.addSwitch('s2')
+        s1 = self.addSwitch('s1', cls=OVSSwitch)
+        s2 = self.addSwitch('s2', cls=OVSSwitch)
 
         # add the links connecting the devices
         self.addLink(h1, s1, bw=bw_other, cls=TCLink)
         self.addLink(h2, s1, bw=bw_other, cls=TCLink)
-        
         self.addLink(s1, s2, bw=bw_bottleneck, cls=TCLink) # bottlneck link
         self.addLink(s2, h3, bw=bw_other, cls=TCLink)
         self.addLink(s2, h4, bw=bw_other, cls=TCLink)
-        
+
 
 def run_topology_tests(bw_bottleneck, bw_other):
     # Build the topology and start the network
@@ -74,50 +75,43 @@ def run_topology_tests(bw_bottleneck, bw_other):
             f.write('\n' + ping_result)
 
     # Stop network after all tests have been run 
-    return net
+    net.stop()
 
-def run_perf_tests(net, bw_bottleneck, bw_other):
+def run_perf_tests(bw_bottleneck, bw_other):
+    # Build the topology and start the network
+    topo = BottleNeckTopology(bw_bottleneck, bw_other)
+    net = Mininet(topo=topo, link=TCLink)
+    net.start()
+
+    # Check if mininet was created properly
+    print("Checking node connections...")
+    dumpNodeConnections(net.hosts)
+
     #Get the client and server nodes
     h1 = net.get('h1') # TCP client
     h2 = net.get('h2') # UDP client
     h3 = net.get('h3') # TCP server
-    h4 = net.get('h4') # UDP server 
+    h4 = net.get('h4') # UDP server
 
-    client_tcp_ip = h1.IP()
-    client_udp_ip = h2.IP()
-    server_tcp_ip = h3.IP()
-    server_udp_ip = h4.IP()
-    
     # TCP SETUP-----------------
-    server_tcp_cmd = f'sudo python3 server.py -ip {server_tcp_ip} -port 5001'
-    try:
-        tcp_server_start = subprocess.Popen(server_tcp_cmd, shell=True)
-    except Exception as e:
-        print(f'Error: {e}')
-        tcp_server_start.terminate()
-        exit(1)
+    server_tcp_cmd = 'sudo python3 server.py -ip 10.0.0.3 -port 5201 &'
+    tcp_server = h3.cmd(server_tcp_cmd)
     time.sleep(2)
 
-    tcp_client_cmd = f'sudo python3 client.py -ip {client_tcp_ip} -port 5001 -server_ip {server_tcp_ip} -test tcp'
-    tcp_result = subprocess.Popen(tcp_client_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
-    # Wait for the client to complete and fetch its output
-    tcp_output, tcp_error = tcp_result.communicate()
-    tcp_server_start.terminate()
-    if tcp_error:
-        print(f"TCP client error: {tcp_error.decode()}")
+    tcp_client_cmd = 'sudo python3 client.py -ip 10.0.0.1 -port 5201 -server_ip 10.0.0.3 -test tcp'
+    tcp_output = h1.cmd(tcp_client_cmd)
 
     # Extract data from TCP result
     try:
-        tcp_data = json.loads(tcp_output.decode().strip())
+        tcp_data = json.loads(tcp_output.strip())
     except Exception as e:
         print("Failed to decode JSON:", e)
-        print("TCP Output:", tcp_output.decode().strip())
+        print("TCP Output:", tcp_output.strip())
         exit(1) # Terminate whole script
 
     total_bytes_sent_tcp = tcp_data.get('sent_bytes', 0)
     total_bytes_received_tcp = tcp_data.get('received_bytes', 0)
-    
+
     # Create and write to the TCP output JSON file
     tcp_output_filename = f'output-tcp-{bw_bottleneck}-{bw_other}.json'
     tcp_output_data = {
@@ -131,37 +125,26 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
         json.dump(tcp_output_data, f, indent=4)
     print(f'TCP results written to {tcp_output_filename}')
 
-    
+
     # UDP SETUP-----------------
-    server_udp_cmd = f'sudo python3 server.py -ip {server_udp_ip} -port 5002'
-    try:
-        udp_server_start = subprocess.Popen(server_udp_cmd, shell=True)
-    except Exception as e:
-        print(f'Error: {e}')
-        tcp_server_start.terminate()
-        exit(1)
+    server_udp_cmd = f'python3 server.py -ip {server_udp_ip} -port 5002 &'
+    udp_server_start = h4.cmd(server_udp_cmd)
     time.sleep(2)
 
-    udp_client_cmd = f'sudo python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
-    udp_result = subprocess.Popen(udp_client_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
-    # Wait for client to complete and fetch
-    udp_output, udp_error = udp_result.communicate()
-    udp_server_start.terminate()
-    if udp_error:
-        print(f"UDP client error: {udp_error.decode()}")
-    
+    udp_client_cmd = f'python3 client.py -ip {client_udp_ip} -port 5002 -server_ip {server_udp_ip} -test udp'
+    udp_output = h2.cmd(udp_client_cmd)
+
     # Extract data from UDP result
     try:
-        udp_data = json.loads(udp_output.decode().strip())
+        udp_data = json.loads(udp_output.strip())
     except Exception as e:
         print("Failed to decode JSON:", e)
-        print("UDP Output:", tcp_output.decode().strip())
+        print("UDP Output:", udp_output.strip())
         exit(1) #Terminate whole script
-    
+
     total_bytes_sent_udp = udp_data.get('sent_bytes', 0)
-    total_bytes_received_udp = udp_data('received_bytes', 0)
-    
+    total_bytes_received_udp = udp_data.get('received_bytes', 0)
+
     # Create and write to the UDP output JSON file
     udp_output_filename = f'output-udp-{bw_bottleneck}-{bw_other}.json'
     udp_output_data = {
@@ -175,6 +158,7 @@ def run_perf_tests(net, bw_bottleneck, bw_other):
         json.dump(udp_output_data, f, indent=4)
     print(f'UDP results written to {udp_output_filename}')
 
+    net.stop()
 
 if __name__ == "__main__":
     # Clearing mininet state between executions
@@ -198,8 +182,5 @@ if __name__ == "__main__":
         raise ValueError('The bandwidth for other links must be higher than the ' +
                          'specified bottleneck bandwidth')
     
-    net = run_topology_tests(args.bw_bottleneck, args.bw_other)
-
-    run_perf_tests(net, args.bw_bottleneck, args.bw_other)
-
-    net.stop()
+    run_topology_tests(args.bw_bottleneck, args.bw_other)
+    run_perf_tests(args.bw_bottleneck, args.bw_other)
