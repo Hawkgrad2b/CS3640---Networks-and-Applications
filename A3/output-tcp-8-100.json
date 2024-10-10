@@ -2,6 +2,6 @@
     "test_type": "TCP",
     "bottleneck_bandwidth": 8,
     "other_bandwidth": 100,
-    "total_bytes_sent": 58197600,
-    "total_bytes_received": 57611520
+    "total_bytes_sent": 57736800,
+    "total_bytes_received": 57408480
 }

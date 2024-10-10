@@ -7,7 +7,7 @@ From 10.0.0.4 icmp_seq=3 Destination Host Unreachable
 From 10.0.0.4 icmp_seq=4 Destination Host Unreachable
 
 --- 10.0.0.1 ping statistics ---
-4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3062ms
+4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3091ms
 pipe 4
 PING 10.0.0.2 (10.0.0.2) 56(84) bytes of data.
 From 10.0.0.4 icmp_seq=1 Destination Host Unreachable
@@ -16,7 +16,7 @@ From 10.0.0.4 icmp_seq=3 Destination Host Unreachable
 From 10.0.0.4 icmp_seq=4 Destination Host Unreachable
 
 --- 10.0.0.2 ping statistics ---
-4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3049ms
+4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3051ms
 pipe 4
 PING 10.0.0.3 (10.0.0.3) 56(84) bytes of data.
 From 10.0.0.4 icmp_seq=1 Destination Host Unreachable
@@ -25,5 +25,5 @@ From 10.0.0.4 icmp_seq=3 Destination Host Unreachable
 From 10.0.0.4 icmp_seq=4 Destination Host Unreachable
 
 --- 10.0.0.3 ping statistics ---
-4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3060ms
+4 packets transmitted, 0 received, +4 errors, 100% packet loss, time 3109ms
 pipe 4
