@@ -12,6 +12,7 @@ def run_client(ip, port, server_ip, test):
     #client.server_hostname = '0.0.0.0'
     client.server_hostname = server_ip
     client.duration = 60  # Set duration to 60 seconds
+    client.blksize = 1440
 
     #print(f'Starting iPerf3 client from {ip}:{port} to {client.server_hostname}:{port} using {test.upper()}\n')
 
@@ -34,8 +35,8 @@ def run_client(ip, port, server_ip, test):
             print(f"Error: {result.error}")
         else:
             return json.dumps({
-                'sent_bytes': result.sent_bytes if result.sent_bytes else 0,
-                'received_bytes': result.received_bytes if result.received_bytes else 0,
+                'sent_bytes': getattr(result, 'bytes', 0),
+                'lost_percent': getattr(result, 'lost_percent', 0),
                 'error': result.error if result.error else None,
             })
 
