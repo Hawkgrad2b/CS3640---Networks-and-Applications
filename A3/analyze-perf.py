@@ -13,12 +13,12 @@ def parse_results(filename, protocol):
         # TCP/UDP throughput in Mbps
         if protocol.lower() == 'tcp':
             # Convert from bytes to megabits
-            print((data['received_bytes'] * 8) / (10**6))
-            return ((data['received_bytes'] * 8) / (10**6))  # Mbps
+            print((data['total_bytes_received'] * 8) / (10**6))
+            return ((data['total_bytes_received'] * 8) / (10**6))  # Mbps
         elif protocol.lower() == 'udp':
             # Convert from bytes to megabits, assuming 'sent_bytes'
-            print(((data['sent_bytes'] * 8) / (10**6)))
-            return ((data['sent_bytes'] * 8) / (10**6))  # Mbps
+            print(((data['total_bytes_sent'] * 8) / (10**6)))
+            return ((data['total_bytes_sent'] * 8) / (10**6))  # Mbps
     except FileNotFoundError:
         print(f"File {filename} not found.")
         return 0
@@ -29,18 +29,19 @@ def parse_results(filename, protocol):
 def plot_results(bw_bottleneck_list, tcp_throughputs, udp_throughputs):    
     # Plot the TCP and UDP throughput results.
 
-    plt.figure(figsize=(10, 6))
-    
-    print(f'bw_bottleneck_list: {bw_bottleneck_list}, length: {len(bw_bottleneck_list)}')
-    print(f'tcp_throughputs: {tcp_throughputs}, length: {len(tcp_throughputs)}')
-    print(f'udp_throughputs: {udp_throughputs}, length: {len(udp_throughputs)}')
+    for plots in enumerate(bw_bottleneck_list):
+        plt.figure(figsize=(10, 6))
+        
+        print(f'bw_bottleneck_list: {bw_bottleneck_list[plots]}, length: {len(bw_bottleneck_list)}')
+        print(f'tcp_throughputs: {tcp_throughputs[plots]}, length: {len(tcp_throughputs)}')
+        print(f'udp_throughputs: {udp_throughputs[plots]}, length: {len(udp_throughputs)}')
 
-    
-    # Plot TCP throughput
-    plt.plot(bw_bottleneck_list, tcp_throughputs, label='TCP Throughput', marker='o', color='b')
-    
-    # Plot UDP throughput
-    plt.plot(bw_bottleneck_list, udp_throughputs, label='UDP Throughput', marker='o', color='r')
+        
+        # Plot TCP throughput
+        plt.plot(bw_bottleneck_list[plots], tcp_throughputs[plots], label='TCP Throughput', marker='o', color='b')
+        
+        # Plot UDP throughput
+        plt.plot(bw_bottleneck_list[plots], udp_throughputs[plots], label='UDP Throughput', marker='o', color='r')
     
     # Add labels and title
     plt.xlabel('Bottleneck Bandwidth (Mbps)')
