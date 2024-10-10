@@ -13,10 +13,12 @@ def parse_results(filename, protocol):
         # TCP/UDP throughput in Mbps
         if protocol.lower() == 'tcp':
             # Convert from bytes to megabits
-            return (data['received_bytes'] * 8) / (10**6)  # Mbps
+            print((data['received_bytes'] * 8) / (10**6))
+            return ((data['received_bytes'] * 8) / (10**6))  # Mbps
         elif protocol.lower() == 'udp':
             # Convert from bytes to megabits, assuming 'sent_bytes'
-            return (data['sent_bytes'] * 8) / (10**6)  # Mbps
+            print(((data['sent_bytes'] * 8) / (10**6)))
+            return ((data['sent_bytes'] * 8) / (10**6))  # Mbps
     except FileNotFoundError:
         print(f"File {filename} not found.")
         return 0
@@ -28,6 +30,11 @@ def plot_results(bw_bottleneck_list, tcp_throughputs, udp_throughputs):
     # Plot the TCP and UDP throughput results.
 
     plt.figure(figsize=(10, 6))
+    
+    print(f'bw_bottleneck_list: {bw_bottleneck_list}, length: {len(bw_bottleneck_list)}')
+    print(f'tcp_throughputs: {tcp_throughputs}, length: {len(tcp_throughputs)}')
+    print(f'udp_throughputs: {udp_throughputs}, length: {len(udp_throughputs)}')
+
     
     # Plot TCP throughput
     plt.plot(bw_bottleneck_list, tcp_throughputs, label='TCP Throughput', marker='o', color='b')
@@ -60,27 +67,27 @@ def main():
     for bw_bottleneck in bottleneck_bandwidths:
         print(f'Testing with bottleneck bandwidth: {bw_bottleneck} Mbps')
 
-    # Build the command to run network_bottleneck.py
-    cmd = [
-        'sudo', 'python3', 'network_bottleneck.py',
-        '--bw_bottleneck', str(bw_bottleneck),
-        '--bw_other', str(bw_other),
-        '--time', '10'  # Run for 10 seconds
-    ]
+        # Build the command to run network_bottleneck.py
+        cmd = [
+            'sudo', 'python3', 'network_bottleneck.py',
+            '-bw_bottleneck', str(bw_bottleneck),
+            '-bw_other', str(bw_other),
+            '-time', '10'  # Run for 10 seconds
+        ]
 
-    # Execute the command
-    subprocess.run(cmd)
+        # Execute the command
+        subprocess.run(cmd)
 
-    # Collect TCP and UDP results from the output files
-    tcp_throughput = parse_results(f'output-tcp-{bw_bottleneck}-{bw_other}.json', 'TCP')
-    udp_throughput = parse_results(f'output-udp-{bw_bottleneck}-{bw_other}.json', 'UDP')
+        # Collect TCP and UDP results from the output files
+        tcp_throughput = parse_results(f'output-tcp-{bw_bottleneck}-{bw_other}.json', 'TCP')
+        udp_throughput = parse_results(f'output-udp-{bw_bottleneck}-{bw_other}.json', 'UDP')
 
-    # Append the throughput to the lists
-    tcp_throughputs.append(tcp_throughput)
-    udp_throughputs.append(udp_throughput)
+        # Append the throughput to the lists
+        tcp_throughputs.append(tcp_throughput)
+        udp_throughputs.append(udp_throughput)
 
-    # Plot the results
-    plot_results(bottleneck_bandwidths, tcp_throughputs, udp_throughputs)
+        # Plot the results
+        plot_results(bottleneck_bandwidths, tcp_throughputs, udp_throughputs)
 
     # Write insights to observations.txt
     with open('observations.txt', 'w') as f:
@@ -91,4 +98,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
