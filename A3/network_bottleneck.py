@@ -127,11 +127,11 @@ def run_perf_tests(bw_bottleneck, bw_other):
 
 
     # UDP SETUP-----------------
-    server_udp_cmd = f'python3 server.py -ip 10.0.0.4 -port 5002 &'
+    server_udp_cmd = f'sudo python3 server.py -ip 10.0.0.4 -port 5002 &'
     udp_server_start = h4.cmd(server_udp_cmd)
     time.sleep(2)
 
-    udp_client_cmd = f'python3 client.py -ip 10.0.0.2 -port 5002 -server_ip 10.0.0.4 -test udp'
+    udp_client_cmd = f'sudo python3 client.py -ip 10.0.0.2 -port 5002 -server_ip 10.0.0.4 -test udp'
     udp_output = h2.cmd(udp_client_cmd)
 
     # Extract data from UDP result

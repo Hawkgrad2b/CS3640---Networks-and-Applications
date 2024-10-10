@@ -14,12 +14,9 @@ def run_client(ip, port, server_ip, test):
     client.duration = 60  # Set duration to 60 seconds
     client.blksize = 1440
 
-    #print(f'Starting iPerf3 client from {ip}:{port} to {client.server_hostname}:{port} using {test.upper()}\n')
-
     if test == 'tcp':
         client.protocol = 'tcp'
         result = client.run()
-        #debug: print("CLIENT RESULT:", result)
         if result.error:
             print(f"Error: {result.error}")
         else:
@@ -34,9 +31,11 @@ def run_client(ip, port, server_ip, test):
         if result.error:
             print(f"Error: {result.error}")
         else:
+            # UDP does not have a received_bytes param, so we calculate it
+            received_bytes = round(result.bps * client.duration / 8)
             return json.dumps({
                 'sent_bytes': getattr(result, 'bytes', 0),
-                'lost_percent': getattr(result, 'lost_percent', 0),
+                'received_bytes': received_bytes if received_bytes else 0,
                 'error': result.error if result.error else None,
             })
 

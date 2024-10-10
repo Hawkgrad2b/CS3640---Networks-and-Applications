@@ -1,7 +1,0 @@
-{
-    "test_type": "UDP",
-    "bottleneck_bandwidth": 4,
-    "other_bandwidth": 16,
-    "total_bytes_sent": 28664640,
-    "total_bytes_received": 0
-}
