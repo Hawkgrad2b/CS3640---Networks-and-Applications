@@ -1,4 +1,7 @@
+# Krisham Prasai, hawkid=01411050
 # client.py
+# takes 2 arguments: server's ip and the port number
+# does not show when other clients disconnect
 
 import socket
 import sys

@@ -1,0 +1,7 @@
+{
+    "test_type": "TCP",
+    "bottleneck_bandwidth": 32,
+    "other_bandwidth": 100,
+    "total_bytes_sent": 221290560,
+    "total_bytes_received": 220508640
+}

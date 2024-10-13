@@ -1,0 +1,2 @@
+bottleneck bandwith: 64 Mbps
+Other links bandwith: 100 Mbps

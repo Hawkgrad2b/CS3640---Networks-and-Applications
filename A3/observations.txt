@@ -1,0 +1,4 @@
+Observations about Network Performance:
+1. TCP throughput scales more predictably with bandwidth compared to UDP.
+2. UDP may suffer from packet loss at lower bandwidths, impacting performance.
+3. High reliability of TCP may come at the cost of overhead, while UDP is lighter but less reliable.
