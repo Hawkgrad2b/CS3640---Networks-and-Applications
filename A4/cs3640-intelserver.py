@@ -33,8 +33,16 @@ def start_server():
         data = client_socket.recv(1024).decode('utf-8')
         print(f'Recieved command: {data}')
         
-        command, domain = data.split("(", 1)
-        domain = domain[:-1]
+        try:
+            command, domain = data.strip().split("(", 1)
+            domain = domain[:-1]
+            command  command.strip()
+            domain = domain.strip()
+        except ValueEorror: 
+            response = "ERROR: Invalid command format."
+            client_socket.send(response.encode('utf-8'))
+            client_socket.close()
+            continue
 
         if command == "IPV4_ADDR":
             response = get_IPV4_ADDR(domain)
