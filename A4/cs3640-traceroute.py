@@ -42,17 +42,22 @@ def recv_icmp_response(sock, id, timeout):
 
         # Parse ICMP type to see if it's a Time Exceeded message
         icmp_type = packet[20]  # The ICMP type field
+
         if icmp_type == 11: # ICMP Time Exceeded message
             rtt = (end_time - start_time) * 1000  # RTT in milliseconds
             return addr[0], rtt  # Return the IP address and RTT
+        
         elif icmp_type == 0: # ICMP Echo Reply message
             rtt = (end_time - start_time) * 1000
             return addr[0], rtt  # Return IP and RTT if it's the final destination
+        
     except socket.timeout:
         return None, None  # Timeout case
     except Exception as e:
         print(f"Error receiving packet: {e}")
         return None, None
+    finally:
+        sock.close() # sock is forsure closed
 
 def main():
     parser = argparse.ArgumentParser(description='Traceroute Program')
@@ -79,8 +84,6 @@ def main():
             print(f'destination = {args.destination}; hop {ttl} = *; rtt = * ms (timeout)')
         
         ttl += 1  # Increment TTL for the next hop
-        sock.close()
 
 if __name__ == '__main__':
     main()
-

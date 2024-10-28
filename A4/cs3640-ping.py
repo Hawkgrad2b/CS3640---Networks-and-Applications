@@ -35,8 +35,11 @@ def send_icmp_echo(socket, payload, id, seq, destination):
     icmp.data = dpkt.icmp.ICMP.Echo(id=id, seq=seq, data=payload.encode())
     icmp.pack() # Computes checksum automatically
 
-    # Send packet to dest
-    socket.sendto(bytes(icmp), (destination, 0))
+    try:
+        # Send packet to dest
+        socket.sendto(bytes(icmp), (destination, 0))
+    except Exception as e:
+        print(f'Error sending packet: {e}')
 
 
 def recv_icmp_response(socket, id, timeout):
@@ -55,10 +58,11 @@ def recv_icmp_response(socket, id, timeout):
                 rtt = (end_time - start_time) * 1000  # Convert to milliseconds
                 return rtt, addr[0]  # Return RTT and source address
 
-    except socket.timeoout:
-        return None
-
-    return
+    except socket.timeout:
+        return None, None
+    except Exception as e:
+        print(f"Error recieving or parsing packet: {e}")
+        return None, None
 
 def main():
     parser = argparse.ArgumentParser(description='Ping a host using ICMP Echo messages.')
@@ -96,3 +100,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
