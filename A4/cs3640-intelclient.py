@@ -16,9 +16,9 @@ def main():
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.connect((server_addr, server_port))
-            command = f"{service} {domain}"
-            sock.sendall(command.encode())
-            response = sock.recv(4096).decode()
+            command = f"{service}({domain})"
+            sock.sendall(command.encode('utf-8'))
+            response = sock.recv(4096).decode('utf-8')
             print(response)
     except Exception as e:
         print(f"Error: {e}")
