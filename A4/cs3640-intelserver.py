@@ -1,11 +1,16 @@
 # Server to provide network intelligence services to clients
 # Listens on 127.0.0.1 via port 5555
 import socket
-import dnspython
+import dns.resolver
 import ssl
 
 def get_IPV4_ADDR(domain):
-    return
+    try:
+        result = dns.resolver.resolve(domain, 'A')
+        print(result)
+        return str(result[0])
+    except Exception as e:
+        return f'Error resolving IPv4 address: {str(e)}'
 
 def get_IPV6_ADDR(domain):
     return
@@ -36,9 +41,9 @@ def start_server():
         try:
             command, domain = data.strip().split("(", 1)
             domain = domain[:-1]
-            command  command.strip()
+            command = command.strip()
             domain = domain.strip()
-        except ValueEorror: 
+        except ValueError: 
             response = "ERROR: Invalid command format."
             client_socket.send(response.encode('utf-8'))
             client_socket.close()
@@ -62,3 +67,4 @@ def start_server():
 
 if __name__ == "__main__":
     start_server()
+
