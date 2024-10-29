@@ -16,3 +16,12 @@
 2024-10-29 22:52:36,573 - INFO - Sent ICMP echo to 8.8.8.8; id=2, seq=2
 2024-10-29 22:52:36,587 - INFO - Received response from 8.8.8.8; RTT=14.1 ms
 2024-10-29 22:52:36,587 - INFO - Ping Complete: Average RTT=14.3 ms, 3/3 successful pings
+2024-10-29 22:57:24,876 - INFO - Starting ping to 8.8.8.8 with 3 packets and TTL=100
+2024-10-29 22:57:24,876 - INFO - ICMP Socket created with TTL=100 and timeout=1
+2024-10-29 22:57:24,877 - INFO - Sent ICMP echo to 8.8.8.8; id=0, seq=0
+2024-10-29 22:57:24,891 - INFO - Received response from 8.8.8.8; RTT=14.1 ms
+2024-10-29 22:57:24,891 - INFO - Sent ICMP echo to 8.8.8.8; id=1, seq=1
+2024-10-29 22:57:24,905 - INFO - Received response from 8.8.8.8; RTT=14.2 ms
+2024-10-29 22:57:24,906 - INFO - Sent ICMP echo to 8.8.8.8; id=2, seq=2
+2024-10-29 22:57:24,920 - INFO - Received response from 8.8.8.8; RTT=14.1 ms
+2024-10-29 22:57:24,920 - INFO - Ping Complete: Average RTT=14.1 ms, 3/3 successful pings
