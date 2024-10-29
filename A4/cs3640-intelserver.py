@@ -7,16 +7,27 @@ import ssl
 def get_IPV4_ADDR(domain):
     try:
         result = dns.resolver.resolve(domain, 'A')
-        print(result)
         return str(result[0])
     except Exception as e:
         return f'Error resolving IPv4 address: {str(e)}'
 
 def get_IPV6_ADDR(domain):
-    return
+    try:
+        result = dns.resolver.resolve(domain, 'AAAA')
+        return str(result[0])
+    except Exception as e:
+        return f'Error resolving IPv4 address: {str(e)}'
 
 def get_TLS_CERT(domain):
-    return 
+    try:
+        port = 443
+        context = ssl.create_default_context()
+        with socket.create_connection((domain, port)) as sock:
+            with context.wrap_socket(sock, server_hostname= domain) as ssock:
+                cert = ssock.getpeercert()
+                return cert
+    except Exception as e:
+        return f"Error retrieving TLS certificate: {str(e)}"
 
 def get_HOSTING_AS(domain):
     return
@@ -67,4 +78,3 @@ def start_server():
 
 if __name__ == "__main__":
     start_server()
-
