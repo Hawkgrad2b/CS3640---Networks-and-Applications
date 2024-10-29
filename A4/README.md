@@ -63,6 +63,7 @@ sudo python3 cs3640-traceroute.py -destination <destination_ip> -n_hops <max_hop
 
 - <destination_ip>: The IP address or domain name of the destination host.
 - <max_hops>: The maximum number of hops to trace.
+#### Sample Output: 
 ~~~
 destination = 8.8.8.8; hop 1 = 192.168.1.1; rtt = 0.50 ms
 destination = 8.8.8.8; hop 2 = 10.0.0.1; rtt = 0.72 ms
