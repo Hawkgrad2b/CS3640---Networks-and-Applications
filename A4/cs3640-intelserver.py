@@ -3,6 +3,7 @@
 import socket
 import dns.resolver
 import ssl
+from ipwhois import IPWhois
 
 def get_IPV4_ADDR(domain):
     try:
