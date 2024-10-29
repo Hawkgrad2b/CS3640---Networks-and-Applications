@@ -123,8 +123,12 @@ python3 cs3640-intelclient.py <intel_server_addr> <intel_server_port> <domain> <
 ## Contribution/Credit Reel:
 **William Lucas(HawkID: wplucas)** <br>
 - Task completed:
-    - 1
-    - 2
+    - Created the three main methods for task one for implementing the ping program using ICMP Echo Messages
+    - Corrected some formatting and error correction in Traceroute
+    - Created the code outline for the cs3640-intelServer.
+    - Implemented the code for methods of IPv4, Ipv6, and TLS CERT in server.
+    - Created the logging process for the server and client files.
+    - Helped debugg and fix simple typo's throughout assignment
 
 **Krisham Prasai (HawkID: kprasai)** <br>
 - Task completed:
