@@ -30,10 +30,45 @@ def get_TLS_CERT(domain):
         return f"Error retrieving TLS certificate: {str(e)}"
 
 def get_HOSTING_AS(domain):
-    return
+    try:
+        ip_addr = get_IPV4_ADDR(domain)
+        if 'Error' in ip_addr:
+            return ip_addr  # Return the error message
+        # WHOIS
+        obj = IPWhois(ip_addr)
+        results = obj.lookup_whois()
+        asn = results.get('asn')
+        asn_description = results.get('asn_description')
+        if asn and asn_description:
+            return f'AS{asn} - {asn_description}'
+        else:
+            return "Hosting AS information not found."
+    except Exception as e:
+        return f"Error retrieving hosting AS: {str(e)}"
 
 def get_ORGANIZATION(domain):
-    return
+    try:
+        cert = get_TLS_CERT(domain)
+
+        if isinstance(cert, str) and 'Error' in cert:
+            return cert  # Return the error message from get_TLS_CERT
+        
+        subject = cert.get('subject', [])
+        organization = None
+        
+        for item in subject:
+            # Each item is a list of tuples
+            for attribute in item:
+                key = attribute[0]
+                value = attribute[1]
+                if key == 'organizationName' or key == 'O':
+                    organization = value
+                    return organization  
+        
+        # If organization not found after looping
+        return "Organization not found in TLS certificate."
+    except Exception as e:
+        return f"Error retrieving organization: {str(e)}"
 
 
 def start_server():
