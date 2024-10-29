@@ -1,6 +1,7 @@
 # Server to provide network intelligence services to clients
 # Listens on 127.0.0.1 via port 5555
 import socket
+import json
 import dns.resolver
 import ssl
 from ipwhois import IPWhois
@@ -17,7 +18,7 @@ def get_IPV6_ADDR(domain):
         result = dns.resolver.resolve(domain, 'AAAA')
         return str(result[0])
     except Exception as e:
-        return f'Error resolving IPv4 address: {str(e)}'
+        return f'Error resolving IPv6 address: {str(e)}'
 
 def get_TLS_CERT(domain):
     try:
@@ -26,7 +27,7 @@ def get_TLS_CERT(domain):
         with socket.create_connection((domain, port)) as sock:
             with context.wrap_socket(sock, server_hostname= domain) as ssock:
                 cert = ssock.getpeercert()
-                return cert
+                return cert # return as a dictionary
     except Exception as e:
         return f"Error retrieving TLS certificate: {str(e)}"
 
@@ -50,13 +51,11 @@ def get_HOSTING_AS(domain):
 def get_ORGANIZATION(domain):
     try:
         cert = get_TLS_CERT(domain)
-
         if isinstance(cert, str) and 'Error' in cert:
             return cert  # Return the error message from get_TLS_CERT
         
         subject = cert.get('subject', [])
         organization = None
-        
         for item in subject:
             # Each item is a list of tuples
             for attribute in item:
@@ -101,7 +100,8 @@ def start_server():
         elif command == "IPV6_ADDR":
             response = get_IPV6_ADDR(domain)
         elif command == "TLS_CERT":
-            response = get_TLS_CERT(domain)
+            cert = get_TLS_CERT(domain)
+            response = json.dumps(cert) if isinstance(cert, dict) else cert
         elif command == "HOSTING_AS":
             response = get_HOSTING_AS(domain)
         elif command == "ORGANIZATION":
