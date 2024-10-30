@@ -100,7 +100,23 @@ python3 cs3640-intelclient.py <intel_server_addr> <intel_server_port> <domain> <
     - TLS_CERT
     - HOSTING_AS
     - ORGANIZATION
-
+#### Sample Output: 
+Retrieve IPv4 Address
+~~~
+python3 cs3640-intelclient.py 127.0.0.1 5555 example.com IPV4_ADDR
+~~~
+output:
+~~~
+93.184.216.34
+~~~
+Retrieve Organization Name
+~~~
+python3 cs3640-intelclient.py 127.0.0.1 5555 example.com ORGANIZATION
+~~~
+output:
+~~~
+Example Organization
+~~~
 ## Logging Files
 Each sscript in this assigment geneartes a log file that records the output from the console. <br>
 `cs3640-ping.log`, `cs3640-traceroute.log` & `cs3640-intelServer.log`
