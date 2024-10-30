@@ -101,6 +101,9 @@ python3 cs3640-intelclient.py <intel_server_addr> <intel_server_port> <domain> <
     - HOSTING_AS
     - ORGANIZATION
 
+## Logging Files
+Each sscript in this assigment geneartes a log file that records the output from the console. <br>
+`cs3640-ping.log`, `cs3640-traceroute.log` & `cs3640-intelServer.log`
 ## Credits/Resources: 
 
 **ChatGPT**
@@ -125,23 +128,24 @@ python3 cs3640-intelclient.py <intel_server_addr> <intel_server_port> <domain> <
 - Task completed:
     - Created the three main methods for task one for implementing the ping program using ICMP Echo Messages
     - Corrected some formatting and error correction in Traceroute
-    - Created the code outline for the cs3640-intelServer.
-    - Implemented the code for methods of IPv4, Ipv6, and TLS CERT in server.
+    - Created the code outline for the `cs3640-intelServer.py`.
+    - Implemented the code for methods of IPv4, Ipv6, and TLS CERT in `cs3640-intelServer.py`.
     - Created the logging process for the server and client files.
     - Helped debugg and fix simple typo's throughout assignment
 
 **Krisham Prasai (HawkID: kprasai)** <br>
 - Task completed:
-    - 1
-    - 2
+    - Implemented methods make_icmp_stocket(),send_icmp_echo() & recv_icmp_response() in `cs3640-ping.py` 
+    - Implemented the Traceroute Program `cs3640-tracerout.py` 
+    - Outlined the code for `cs3640-intelClient.py`
 
 **Alan Chen (HawkID: alachen)** <br>
 - Task completed:
     - Impletemented Error Handling for the scripts. 
     - Implemented get_ORGANIZATION() & get_HOSTING_AS() in `cs3640-intelserver.py`
-    -  Ensuring documentation standards for this assignment (well-documented code, Readme, credit Reel).
+    - Ensuring documentation standards for this assignment (Readme, credit Reel).
 
 **Vinayak Deshpande (HawkID: vdeshpande)** <br>
 - Task completed:
-    - 1
-    - 2
+    - Created the logging process for `cs3640-ping.py` & `cs3640-tracerout.py` files.
+    - Assisted with code optimization and efficiency improvements.
