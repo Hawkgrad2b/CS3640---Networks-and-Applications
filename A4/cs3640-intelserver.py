@@ -6,6 +6,8 @@ import dns.resolver
 import ssl
 from ipwhois import IPWhois
 import logging
+import sys
+import signal
 
 logging.basicConfig(
     filename='cs3640-intelServer.log',
@@ -90,46 +92,60 @@ def start_server():
     logging.info("Server started and listening on port 5555.")
     print('Server has been started and is listening on port 5555...')
 
-    while True:
-        client_socket, addr = server_sock.accept()
-        logging.info(f'Connection from {addr} established.')
-        print(f'Connection from {addr} has been established')
-    
+    def shutdown_server(signum, frame):
+        # graceful shutdown for the sever
+        logging.info("Shutting down the server...")
+        print("Shutting down the server...")
+        server_sock.close()
+        sys.exit(0)
 
-        data = client_socket.recv(1024).decode('utf-8')
-        logging.info(f'Received command: {data}')
-        print(f'Recieved command: {data}')
+    # register the signal for shutdown 'CTRL C'
+    signal.signal(signal.SIGINT, shutdown_server)
+
+    try:
+        while True:
+            client_socket, addr = server_sock.accept()
+            logging.info(f'Connection from {addr} established.')
+            print(f'Connection from {addr} has been established')
         
-        try:
-            command, domain = data.strip().split("(", 1)
-            domain = domain[:-1]
-            command = command.strip()
-            domain = domain.strip()
-        except ValueError: 
-            response = "ERROR: Invalid command format."
+
+            data = client_socket.recv(1024).decode('utf-8')
+            logging.info(f'Received command: {data}')
+            print(f'Recieved command: {data}')
+            
+            try:
+                command, domain = data.strip().split("(", 1)
+                domain = domain[:-1]
+                command = command.strip()
+                domain = domain.strip()
+            except ValueError: 
+                response = "ERROR: Invalid command format."
+                client_socket.send(response.encode('utf-8'))
+                client_socket.close()
+                logging.error("Invalid command format received.")
+                continue
+
+            if command == "IPV4_ADDR":
+                response = get_IPV4_ADDR(domain)
+            elif command == "IPV6_ADDR":
+                response = get_IPV6_ADDR(domain)
+            elif command == "TLS_CERT":
+                cert = get_TLS_CERT(domain)
+                response = json.dumps(cert) if isinstance(cert, dict) else cert
+            elif command == "HOSTING_AS":
+                response = get_HOSTING_AS(domain)
+            elif command == "ORGANIZATION":
+                response = get_ORGANIZATION(domain)
+            else:
+                response = "Unknown command."
+                logging.warning(f"Unknown command received: {command}")
+
             client_socket.send(response.encode('utf-8'))
+            logging.info(f'Sent response: {response}')
             client_socket.close()
-            logging.error("Invalid command format received.")
-            continue
 
-        if command == "IPV4_ADDR":
-            response = get_IPV4_ADDR(domain)
-        elif command == "IPV6_ADDR":
-            response = get_IPV6_ADDR(domain)
-        elif command == "TLS_CERT":
-            cert = get_TLS_CERT(domain)
-            response = json.dumps(cert) if isinstance(cert, dict) else cert
-        elif command == "HOSTING_AS":
-            response = get_HOSTING_AS(domain)
-        elif command == "ORGANIZATION":
-            response = get_ORGANIZATION(domain)
-        else:
-            response = "Unknown command."
-            logging.warning(f"Unknown command received: {command}")
-        
-        client_socket.send(response.encode('utf-8'))
-        logging.info(f'Sent response: {response}')
-        client_socket.close()
+    except KeyboardInterrupt:
+        shutdown_server(None, None)
 
 if __name__ == "__main__":
     start_server()
