@@ -5,7 +5,7 @@ import sys
 import logging
 
 logging.basicConfig(
-    filename='cs3640-intelServer.log',
+    filename='cs3640-intelClient.log',
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
