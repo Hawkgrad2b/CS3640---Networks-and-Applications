@@ -1,0 +1,26 @@
+2024-10-29 22:53:42,837 - INFO - Starting traceroute to 8.8.8.8 with max hops 3
+2024-10-29 22:53:42,837 - INFO - ICMP Socket created with TTL=1 and timeout=1
+2024-10-29 22:53:42,837 - INFO - Sent ICMP echo to 8.8.8.8; id=0, seq=1
+2024-10-29 22:53:42,838 - INFO - destination=192.168.86.1; icmp_seq=0; ttl=1, rtt=0.4 ms
+2024-10-29 22:53:42,838 - INFO - destination=8.8.8.8; hop=1; ip=192.168.86.1; rtt=0.4 ms
+2024-10-29 22:53:42,838 - INFO - ICMP Socket created with TTL=2 and timeout=1
+2024-10-29 22:53:42,838 - INFO - Sent ICMP echo to 8.8.8.8; id=0, seq=2
+2024-10-29 22:53:42,840 - INFO - destination=204.144.200.1; icmp_seq=0; ttl=2, rtt=2.2 ms
+2024-10-29 22:53:42,841 - INFO - destination=8.8.8.8; hop=2; ip=204.144.200.1; rtt=2.2 ms
+2024-10-29 22:53:42,841 - INFO - ICMP Socket created with TTL=3 and timeout=1
+2024-10-29 22:53:42,841 - INFO - Sent ICMP echo to 8.8.8.8; id=0, seq=3
+2024-10-29 22:53:42,847 - INFO - destination=207.191.217.88; icmp_seq=0; ttl=3, rtt=6.0 ms
+2024-10-29 22:53:42,847 - INFO - destination=8.8.8.8; hop=3; ip=207.191.217.88; rtt=6.0 ms
+2024-10-29 22:57:19,602 - INFO - Starting traceroute to 8.8.8.8 with max hops 3
+2024-10-29 22:57:19,602 - INFO - ICMP Socket created with TTL=1 and timeout=1
+2024-10-29 22:57:19,603 - INFO - Sent ICMP echo to 8.8.8.8; id=0, seq=1
+2024-10-29 22:57:19,603 - INFO - destination=192.168.86.1; icmp_seq=0; ttl=1, rtt=0.5 ms
+2024-10-29 22:57:19,603 - INFO - destination=8.8.8.8; hop=1; ip=192.168.86.1; rtt=0.5 ms
+2024-10-29 22:57:19,603 - INFO - ICMP Socket created with TTL=2 and timeout=1
+2024-10-29 22:57:19,604 - INFO - Sent ICMP echo to 8.8.8.8; id=0, seq=2
+2024-10-29 22:57:19,606 - INFO - destination=204.144.200.1; icmp_seq=0; ttl=2, rtt=2.4 ms
+2024-10-29 22:57:19,606 - INFO - destination=8.8.8.8; hop=2; ip=204.144.200.1; rtt=2.4 ms
+2024-10-29 22:57:19,606 - INFO - ICMP Socket created with TTL=3 and timeout=1
+2024-10-29 22:57:19,606 - INFO - Sent ICMP echo to 8.8.8.8; id=0, seq=3
+2024-10-29 22:57:19,613 - INFO - destination=207.191.217.88; icmp_seq=0; ttl=3, rtt=7.0 ms
+2024-10-29 22:57:19,613 - INFO - destination=8.8.8.8; hop=3; ip=207.191.217.88; rtt=7.0 ms
