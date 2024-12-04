@@ -1,0 +1,15 @@
+{
+    "url": "https://hulu.com",
+    "privacy_policy": {
+        "link": "https://privacy.thewaltdisneycompany.com/en/current-privacy-policy/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 23.1,
+        "flesch_reading_ease": 3.77
+    },
+    "dnsmpi": {
+        "link": "https://privacy.thewaltdisneycompany.com/en/dnssmpi/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0
+    }
+}

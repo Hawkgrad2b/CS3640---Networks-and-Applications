@@ -1,0 +1,21 @@
+{
+    "url": "https://amazon.com",
+    "privacy_policy": {
+        "link": "https://www.amazon.com/gp/help/customer/display.html?nodeId=468496&ref_=footer_privacy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": -2.7,
+        "flesch_reading_ease": 119.19
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 6,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

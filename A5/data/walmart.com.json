@@ -1,0 +1,15 @@
+{
+    "url": "https://walmart.com",
+    "privacy_policy": {
+        "link": "https://corporate.walmart.com/privacy-security",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 20.2,
+        "flesch_reading_ease": 11.18
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
+}

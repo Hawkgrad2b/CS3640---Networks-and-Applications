@@ -1,0 +1,15 @@
+{
+    "url": "https://booking.com",
+    "privacy_policy": {
+        "link": "https://www.booking.com/content/privacy.html",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 11.8,
+        "flesch_reading_ease": 43.83
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": 2
+    }
+}

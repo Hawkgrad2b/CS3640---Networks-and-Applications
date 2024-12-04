@@ -1,0 +1,21 @@
+{
+    "url": "https://tumblr.com",
+    "privacy_policy": {
+        "link": "https://www.tumblr.com/policy/privacy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 21.9,
+        "flesch_reading_ease": 6.81
+    },
+    "dnsmpi": {
+        "link": "https://help.tumblr.com/hc/articles/360041012973-Your-Advertising-Choices",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "url": "https://cbsnews.com",
+    "privacy_policy": {
+        "link": "https://www.viacomcbsprivacy.com/policy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 8.4,
+        "flesch_reading_ease": 63.7
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": 1
+    }
+}

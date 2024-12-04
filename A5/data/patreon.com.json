@@ -1,0 +1,21 @@
+{
+    "url": "https://patreon.com",
+    "privacy_policy": {
+        "link": "https://privacy.patreon.com/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 3.3,
+        "flesch_reading_ease": 87.72
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "url": "https://bing.com",
+    "privacy_policy": {
+        "link": "https://www.bing.com/?toWww=1&redig=71C6793DF56A4E2D88FDF1C4BE1A0841",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 1,
+        "flesch_kincaid_grade": 2.9,
+        "flesch_reading_ease": 83.32
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

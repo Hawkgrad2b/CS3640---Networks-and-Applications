@@ -1,0 +1,21 @@
+{
+    "url": "https://instagram.com",
+    "privacy_policy": {
+        "link": "https://www.instagram.com/legal/privacy/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 9.6,
+        "flesch_reading_ease": 44.41
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

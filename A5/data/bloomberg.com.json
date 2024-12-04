@@ -1,0 +1,21 @@
+{
+    "url": "https://bloomberg.com",
+    "privacy_policy": {
+        "link": "https://www.bloomberg.com/notices/tos",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 6.5,
+        "flesch_reading_ease": 68.47
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 6,
+        "webgl_calls": 50,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

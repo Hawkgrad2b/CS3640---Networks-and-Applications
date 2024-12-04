@@ -1,0 +1,5 @@
+{
+    "url": "https://time.com",
+    "privacy_policy": "https://time.com/privacy/privacy_policy.html",
+    "dnsmpi": "javascript:ketch('showPreferences')"
+}

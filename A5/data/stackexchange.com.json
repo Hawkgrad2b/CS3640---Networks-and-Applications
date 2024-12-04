@@ -1,0 +1,21 @@
+{
+    "url": "https://stackexchange.com",
+    "privacy_policy": {
+        "link": "https://stackoverflow.com/legal/privacy-policy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 14.0,
+        "flesch_reading_ease": 38.15
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

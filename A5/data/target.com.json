@@ -1,0 +1,21 @@
+{
+    "url": "https://target.com",
+    "privacy_policy": {
+        "link": "https://www.target.com/c/target-privacy-policy/-/N-4sr7p",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 12.9,
+        "flesch_reading_ease": 41.19
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 20,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

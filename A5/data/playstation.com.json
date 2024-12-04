@@ -1,0 +1,21 @@
+{
+    "url": "https://playstation.com",
+    "privacy_policy": {
+        "link": "https://www.playstation.com/en-us/legal/privacy-policy/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 14.5,
+        "flesch_reading_ease": 37.03
+    },
+    "dnsmpi": {
+        "link": "https://www.playstation.com/en-us/legal/third-party-ads/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

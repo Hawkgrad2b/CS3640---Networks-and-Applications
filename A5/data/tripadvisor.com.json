@@ -1,0 +1,21 @@
+{
+    "url": "https://tripadvisor.com",
+    "privacy_policy": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null,
+        "flesch_kincaid_grade": null,
+        "flesch_reading_ease": null
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
+    }
+}

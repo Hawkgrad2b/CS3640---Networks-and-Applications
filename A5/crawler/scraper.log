@@ -1,0 +1,187 @@
+2024-12-04 03:16:14,324 - INFO - Successfully scraped: https://facebook.com
+2024-12-04 03:16:14,524 - INFO - Successfully scraped: https://google.com
+2024-12-04 03:16:16,507 - INFO - Successfully scraped: https://wikipedia.org
+2024-12-04 03:16:16,971 - INFO - Successfully scraped: https://instagram.com
+2024-12-04 03:17:04,845 - ERROR - Failed to scrape https://yahoo.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://yahoo.com/", waiting until "load"
+
+2024-12-04 03:17:10,514 - INFO - Successfully scraped: https://reddit.com
+2024-12-04 03:17:10,515 - WARNING - No privacy policy found for https://reddit.com. Consider adding new patterns.
+2024-12-04 03:17:12,003 - INFO - Successfully scraped: https://chatgpt.com
+2024-12-04 03:17:12,018 - WARNING - No privacy policy found for https://chatgpt.com. Consider adding new patterns.
+2024-12-04 03:17:14,774 - INFO - Successfully scraped: https://whatsapp.com
+2024-12-04 03:17:14,775 - WARNING - No privacy policy found for https://whatsapp.com. Consider adding new patterns.
+2024-12-04 03:17:21,289 - INFO - Successfully scraped: https://amazon.com
+2024-12-04 03:17:22,943 - INFO - Successfully scraped: https://tiktok.com
+2024-12-04 03:17:22,944 - WARNING - No privacy policy found for https://tiktok.com. Consider adding new patterns.
+2024-12-04 03:17:34,523 - INFO - Successfully scraped: https://linkedin.com
+2024-12-04 03:17:34,526 - WARNING - No privacy policy found for https://linkedin.com. Consider adding new patterns.
+2024-12-04 03:17:35,664 - INFO - Successfully scraped: https://bing.com
+2024-12-04 03:17:35,668 - WARNING - No privacy policy found for https://bing.com. Consider adding new patterns.
+2024-12-04 03:17:41,783 - INFO - Successfully scraped: https://twitter.com
+2024-12-04 03:17:45,776 - INFO - Successfully scraped: https://pinterest.com
+2024-12-04 03:17:45,777 - WARNING - No privacy policy found for https://pinterest.com. Consider adding new patterns.
+2024-12-04 03:17:46,708 - INFO - Successfully scraped: https://ebay.com
+2024-12-04 03:17:56,377 - INFO - Successfully scraped: https://cnn.com
+2024-12-04 03:17:56,377 - WARNING - No privacy policy found for https://cnn.com. Consider adding new patterns.
+2024-12-04 03:18:09,725 - INFO - Successfully scraped: https://netflix.com
+2024-12-04 03:18:12,953 - INFO - Successfully scraped: https://microsoft.com
+2024-12-04 03:18:23,301 - INFO - Successfully scraped: https://foxnews.com
+2024-12-04 03:18:23,302 - WARNING - No privacy policy found for https://foxnews.com. Consider adding new patterns.
+2024-12-04 03:18:28,365 - INFO - Successfully scraped: https://espn.com
+2024-12-04 03:18:40,605 - INFO - Successfully scraped: https://shopify.com
+2024-12-04 03:18:44,851 - INFO - Successfully scraped: https://disneyplus.com
+2024-12-04 03:19:02,379 - INFO - Successfully scraped: https://spotify.com
+2024-12-04 03:19:02,410 - WARNING - No privacy policy found for https://spotify.com. Consider adding new patterns.
+2024-12-04 03:19:07,022 - INFO - Successfully scraped: https://twitch.tv
+2024-12-04 03:19:07,023 - WARNING - No privacy policy found for https://twitch.tv. Consider adding new patterns.
+2024-12-04 03:19:07,739 - INFO - Successfully scraped: https://bbc.com
+2024-12-04 03:19:20,271 - INFO - Successfully scraped: https://stackexchange.com
+2024-12-04 03:19:22,415 - INFO - Successfully scraped: https://apple.com
+2024-12-04 03:19:23,882 - INFO - Successfully scraped: https://github.com
+2024-12-04 03:19:24,501 - INFO - Successfully scraped: https://medium.com
+2024-12-04 03:19:24,502 - WARNING - No privacy policy found for https://medium.com. Consider adding new patterns.
+2024-12-04 03:20:11,628 - ERROR - Failed to scrape https://adobe.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://adobe.com/", waiting until "load"
+
+2024-12-04 03:20:15,906 - INFO - Successfully scraped: https://indeed.com
+2024-12-04 03:20:15,906 - WARNING - No privacy policy found for https://indeed.com. Consider adding new patterns.
+2024-12-04 03:20:23,430 - INFO - Successfully scraped: https://craigslist.org
+2024-12-04 03:20:26,914 - INFO - Successfully scraped: https://wordpress.com
+2024-12-04 03:20:29,118 - INFO - Successfully scraped: https://zoom.us
+2024-12-04 03:21:16,765 - ERROR - Failed to scrape https://accuweather.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://accuweather.com/", waiting until "load"
+
+2024-12-04 03:21:28,559 - INFO - Successfully scraped: https://patreon.com
+2024-12-04 03:21:41,899 - INFO - Successfully scraped: https://yelp.com
+2024-12-04 03:21:44,060 - INFO - Successfully scraped: https://tumblr.com
+2024-12-04 03:21:44,280 - INFO - Successfully scraped: https://deviantart.com
+2024-12-04 03:21:51,832 - INFO - Successfully scraped: https://homedepot.com
+2024-12-04 03:22:03,513 - INFO - Successfully scraped: https://messenger.com
+2024-12-04 03:22:06,880 - INFO - Successfully scraped: https://snapchat.com
+2024-12-04 03:22:06,885 - WARNING - No privacy policy found for https://snapchat.com. Consider adding new patterns.
+2024-12-04 03:22:11,203 - INFO - Successfully scraped: https://outbrain.com
+2024-12-04 03:22:17,200 - INFO - Successfully scraped: https://fandom.com
+2024-12-04 03:22:20,638 - INFO - Successfully scraped: https://character.ai
+2024-12-04 03:22:35,974 - INFO - Successfully scraped: https://canva.com
+2024-12-04 03:22:35,983 - WARNING - No privacy policy found for https://canva.com. Consider adding new patterns.
+2024-12-04 03:22:39,039 - INFO - Successfully scraped: https://figma.com
+2024-12-04 03:23:02,508 - INFO - Successfully scraped: https://capitalone.com
+2024-12-04 03:23:11,038 - INFO - Successfully scraped: https://theguardian.com
+2024-12-04 03:23:13,393 - INFO - Successfully scraped: https://playstation.com
+2024-12-04 03:23:22,793 - INFO - Successfully scraped: https://etsy.com
+2024-12-04 03:23:22,795 - WARNING - No privacy policy found for https://etsy.com. Consider adding new patterns.
+2024-12-04 03:23:24,867 - INFO - Successfully scraped: https://imdb.com
+2024-12-04 03:23:24,867 - WARNING - No privacy policy found for https://imdb.com. Consider adding new patterns.
+2024-12-04 03:23:27,850 - INFO - Successfully scraped: https://deepl.com
+2024-12-04 03:23:32,105 - INFO - Successfully scraped: https://paypal.com
+2024-12-04 03:23:36,244 - INFO - Successfully scraped: https://booking.com
+2024-12-04 03:23:42,973 - ERROR - Failed to scrape https://lowes.com: Page.goto: net::ERR_CONNECTION_RESET at https://lowes.com/
+Call log:
+navigating to "https://lowes.com/", waiting until "load"
+
+2024-12-04 03:24:18,084 - INFO - Successfully scraped: https://zillow.com
+2024-12-04 03:24:18,142 - WARNING - No privacy policy found for https://zillow.com. Consider adding new patterns.
+2024-12-04 03:24:22,384 - INFO - Successfully scraped: https://hulu.com
+2024-12-04 03:24:33,411 - INFO - Successfully scraped: https://target.com
+2024-12-04 03:24:43,665 - ERROR - Failed to scrape https://bbc.co.uk: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://bbc.co.uk/", waiting until "load"
+
+2024-12-04 03:24:54,069 - INFO - Successfully scraped: https://macys.com
+2024-12-04 03:24:54,071 - WARNING - No privacy policy found for https://macys.com. Consider adding new patterns.
+2024-12-04 03:24:55,527 - INFO - Successfully scraped: https://tripadvisor.com
+2024-12-04 03:24:55,528 - WARNING - No privacy policy found for https://tripadvisor.com. Consider adding new patterns.
+2024-12-04 03:25:00,968 - INFO - Successfully scraped: https://kohls.com
+2024-12-04 03:25:01,338 - INFO - Successfully scraped: https://wayfair.com
+2024-12-04 03:25:01,339 - WARNING - No privacy policy found for https://wayfair.com. Consider adding new patterns.
+2024-12-04 03:25:09,631 - INFO - Successfully scraped: https://walmart.com
+2024-12-04 03:25:53,740 - INFO - Successfully scraped: https://bloomberg.com
+2024-12-04 03:26:13,546 - ERROR - Failed to scrape https://nytimes.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://nytimes.com/", waiting until "load"
+
+2024-12-04 03:26:14,907 - ERROR - Failed to scrape https://weather.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://weather.com/", waiting until "load"
+
+2024-12-04 03:26:16,588 - ERROR - Failed to scrape https://forbes.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://forbes.com/", waiting until "load"
+
+2024-12-04 03:26:17,858 - ERROR - Failed to scrape https://usps.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://usps.com/", waiting until "load"
+
+2024-12-04 03:26:32,080 - INFO - Successfully scraped: https://reuters.com
+2024-12-04 03:26:32,080 - WARNING - No privacy policy found for https://reuters.com. Consider adding new patterns.
+2024-12-04 03:26:35,356 - INFO - Successfully scraped: https://npr.org
+2024-12-04 03:26:51,117 - INFO - Successfully scraped: https://theatlantic.com
+2024-12-04 03:27:03,727 - INFO - Successfully scraped: https://time.com
+2024-12-04 03:27:06,778 - INFO - Successfully scraped: https://vox.com
+2024-12-04 03:27:33,034 - INFO - Successfully scraped: https://kotaku.com
+2024-12-04 03:27:39,253 - INFO - Successfully scraped: https://bleacherreport.com
+2024-12-04 03:27:53,952 - INFO - Successfully scraped: https://polygon.com
+2024-12-04 03:28:15,027 - ERROR - Failed to scrape https://wired.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://wired.com/", waiting until "load"
+
+2024-12-04 03:28:15,118 - ERROR - Failed to scrape https://sports.yahoo.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://sports.yahoo.com/", waiting until "load"
+
+2024-12-04 03:28:38,524 - INFO - Successfully scraped: https://cbsnews.com
+2024-12-04 03:29:10,477 - INFO - Successfully scraped: https://abcnews.go.com
+2024-12-04 03:29:22,882 - ERROR - Failed to scrape https://usatoday.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://usatoday.com/", waiting until "load"
+
+2024-12-04 03:29:23,410 - ERROR - Failed to scrape https://msnbc.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://msnbc.com/", waiting until "load"
+
+2024-12-04 03:29:25,134 - INFO - Successfully scraped: https://nbcnews.com
+2024-12-04 03:29:45,762 - INFO - Successfully scraped: https://houstonchronicle.com
+2024-12-04 03:29:45,771 - WARNING - No privacy policy found for https://houstonchronicle.com. Consider adding new patterns.
+2024-12-04 03:29:58,972 - INFO - Successfully scraped: https://sfgate.com
+2024-12-04 03:29:58,978 - WARNING - No privacy policy found for https://sfgate.com. Consider adding new patterns.
+2024-12-04 03:30:23,786 - INFO - Successfully scraped: https://latimes.com
+2024-12-04 03:30:23,786 - WARNING - No privacy policy found for https://latimes.com. Consider adding new patterns.
+2024-12-04 03:30:30,488 - ERROR - Failed to scrape https://philly.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://philly.com/", waiting until "load"
+
+2024-12-04 03:30:30,734 - ERROR - Failed to scrape https://chicagotribune.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://chicagotribune.com/", waiting until "load"
+
+2024-12-04 03:31:18,687 - INFO - Successfully scraped: https://boston.com
+2024-12-04 03:31:34,793 - ERROR - Failed to scrape https://miamiherald.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://miamiherald.com/", waiting until "load"
+
+2024-12-04 03:31:37,987 - ERROR - Failed to scrape https://dallasnews.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://dallasnews.com/", waiting until "load"
+
+2024-12-04 03:31:38,801 - ERROR - Failed to scrape https://detroitnews.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://detroitnews.com/", waiting until "load"
+
+2024-12-04 03:31:39,025 - ERROR - Failed to scrape https://denverpost.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://denverpost.com/", waiting until "load"
+
+2024-12-04 03:31:59,420 - INFO - Successfully scraped: https://startribune.com
+2024-12-04 03:32:40,022 - INFO - Successfully scraped: https://cleveland.com
+2024-12-04 03:32:43,156 - ERROR - Failed to scrape https://salon.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://salon.com/", waiting until "load"
+
+2024-12-04 03:32:45,485 - ERROR - Failed to scrape https://slate.com: Page.goto: Timeout 60000ms exceeded.
+Call log:
+navigating to "https://slate.com/", waiting until "load"
+

@@ -1,0 +1,15 @@
+{
+    "url": "https://canva.com",
+    "privacy_policy": {
+        "link": "https://policies.google.com/privacy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 1,
+        "flesch_kincaid_grade": 13.3,
+        "flesch_reading_ease": 45.39
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
+}
