@@ -1,5 +1,15 @@
 {
     "url": "https://facebook.com",
-    "privacy_policy": "https://www.facebook.com/privacy/policy/?entry_point=facebook_page_footer",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.facebook.com/privacy/policy/?entry_point=facebook_page_footer",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 9.6,
+        "flesch_reading_ease": 44.41
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

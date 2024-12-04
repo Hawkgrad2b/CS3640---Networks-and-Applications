@@ -1,5 +1,15 @@
 {
     "url": "https://wikipedia.org",
-    "privacy_policy": "https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Privacy_policy",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Privacy_policy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 13.4,
+        "flesch_reading_ease": 39.77
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

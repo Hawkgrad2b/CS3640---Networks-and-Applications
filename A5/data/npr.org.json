@@ -1,5 +1,15 @@
 {
     "url": "https://npr.org",
-    "privacy_policy": "https://www.npr.org/about-npr/179878450/privacy-policy",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.npr.org/about-npr/179878450/privacy-policy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 16.1,
+        "flesch_reading_ease": 32.87
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

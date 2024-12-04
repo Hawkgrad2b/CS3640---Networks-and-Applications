@@ -2,10 +2,12 @@ import asyncio
 from playwright.async_api import async_playwright
 import json
 import os
-import random
 import logging
-import traceback
 from urllib.parse import urljoin
+import requests
+from bs4 import BeautifulSoup
+import textstat
+from bs4.element import Comment
 
 # Configure logging
 logging.basicConfig(
@@ -15,75 +17,155 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Keywords for finding privacy policy links
-PRIVACY_POLICY_KEYWORDS = ['privacy policy', 'Privacy', 'cookie policy', 'privacy policy', 'New Privacy Policy', 'legal privacy', 'data protection']
-DNSMPI_KEYWORDS = ['DNSMPI', 'do not share', 'sell my personal information', 'Share My Personal Data', 'Do not sell or share my personal information']
+# Keywords for finding privacy policy and DNSMPI links
+PRIVACY_POLICY_KEYWORDS = [
+    'privacy policy', 'Privacy', 'cookie policy', 'New Privacy Policy', 'legal privacy', 'data protection'
+]
+DNSMPI_KEYWORDS = [
+    'DNSMPI', 'do not share', 'sell my personal information', 'Share My Personal Data',
+    'Do not sell or share my personal information'
+]
 
 # Base directory and output folder
 BASE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIRECTORY = os.path.join(BASE_DIRECTORY, '..', 'data')
 os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 
+
 # Function to dynamically build XPath selectors
 def build_xpath_selectors(keywords):
     selectors = []
     for keyword in keywords:
-         selectors.extend([
-            f'//a[contains(text(), "{keyword}")]',                    # Text-based
-            f'//a[contains(@aria-label, "{keyword}")]',               # ARIA labels
-            f'//a[contains(@data-omtr-intcmp, "{keyword}")]',         # Data-omtr-intcmp attributes
-            f'//a[contains(@id, "{keyword.lower()}")]',               # ID-based
-            f'//a[contains(@href, "{keyword.lower()}")]',             # HREF-based
-            f'//a[@role="link" and contains(text(), "{keyword}")]',  # Role-based
+        selectors.extend([
+            f'//a[contains(translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
+            f'//a[contains(translate(@aria-label, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
+            f'//a[contains(translate(@id, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
+            f'//a[contains(translate(@href, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
+            f'//a[@role="link" and contains(translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
         ])
     return selectors
 
-# Refactored fetch_link function with prioritized selectors
+# Function to fetch the link from a website based on the keywords
 async def fetch_link(page, keywords):
-    # Search for a matching link based on CSS and XPath selectors.
-    css_selectors = [f'a:has-text("{keyword}")' for keyword in keywords]
-    xpath_selectors = build_xpath_selectors(keywords)
-    all_selectors = css_selectors + xpath_selectors
-
-    for selector in all_selectors:
+    selectors = build_xpath_selectors(keywords)
+    for selector in selectors:
         try:
-            # Locate the element
-            element = page.locator(selector).first
-            if await element.is_visible():
-                # Extract the href attribute
-                link = await element.get_attribute('href')
-                if link:
-                    # Ensure absolute URL
-                    if link.startswith("//"):
-                        link = "https:" + link
-                    elif link.startswith("/"):
-                        link = urljoin(page.url, link)
-                    return link
-                
-        except Exception as e:
-            logger.debug(f"Selector '{selector}' failed: {e}")
+            element = await page.query_selector(selector)
+            if element:
+                href = await element.get_attribute('href')
+                if href:
+                    return urljoin(page.url, href)
+        except Exception:
+            continue
     return None
 
-# Enhanced error handling in scrape_website
-async def scrape_website(browser, url, retries=3):
+# Helper function to filter visible text
+def tag_visible(element):
+    if isinstance(element, Comment):
+        return False
+    if element.parent.name in ['style', 'script', 'head', 'meta', '[document]', 'noscript']:
+        return False
+    return True
+
+# Function to analyze clarity of the privacy policy
+def analyze_clarity(policy_url):
+    try:
+        response = requests.get(policy_url, timeout=10)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Extract visible text
+        texts = soup.find_all(text=True)
+        visible_texts = filter(tag_visible, texts)
+        text = u" ".join(t.strip() for t in visible_texts)
+
+        # Calculate readability scores
+        fk_grade = textstat.flesch_kincaid_grade(text)
+        fre_score = textstat.flesch_reading_ease(text)
+
+        # Record results
+        result = {
+            'flesch_kincaid_grade': fk_grade,
+            'flesch_reading_ease': fre_score
+        }
+        return result
+    except Exception as e:
+        logger.error(f"Error analyzing clarity for {policy_url}: {e}")
+        return {
+            'flesch_kincaid_grade': None,
+            'flesch_reading_ease': None
+        }
+
+async def assess_accessibility(page, link_keywords):
+    accessible = False
+    clicks_required = None  # Initialize to None
+    link_href = None
+
+    # Try to find the link on the homepage
+    link_href = await fetch_link(page, link_keywords)
+    if link_href:
+        accessible = True
+        clicks_required = 0  # Found on homepage
+    else:
+        # Try navigating through clickable elements (simulate up to two clicks)
+        max_clicks = 2
+        for clicks in range(1, max_clicks + 1):
+            clickable_elements = await page.query_selector_all('a')
+            for element in clickable_elements:
+                try:
+                    await element.click(timeout=2000)
+                    link_href = await fetch_link(page, link_keywords)
+                    if link_href:
+                        accessible = True
+                        clicks_required = clicks  # Set clicks_required here
+                        break
+                    await page.go_back()
+                except Exception:
+                    continue
+            if accessible:
+                break
+    return link_href, accessible, clicks_required
+
+
+# Enhanced scrape_website function
+async def scrape_website(browser, url):
     if not url.startswith("http://") and not url.startswith("https://"):
         url = "https://" + url
 
-    context = await browser.new_context()
-    page = await context.new_page()
+    page = await browser.new_page()
 
     try:
-        await page.goto(url, timeout=60000)  # Timeout set to 60 seconds
+        await page.goto(url, timeout=60000)
         await page.wait_for_load_state('domcontentloaded')
 
-        privacy_link = await fetch_link(page, PRIVACY_POLICY_KEYWORDS)
-        dnsmpi_link = await fetch_link(page, DNSMPI_KEYWORDS)
+        # Assess accessibility for Privacy Policy link
+        privacy_link, privacy_accessible, privacy_clicks = await assess_accessibility(page, PRIVACY_POLICY_KEYWORDS)
 
+        # Assess accessibility for DNSMPI link
+        dnsmpi_link, dnsmpi_accessible, dnsmpi_clicks = await assess_accessibility(page, DNSMPI_KEYWORDS)
+
+        # Analyze clarity if privacy policy link is found
+        if privacy_link:
+            clarity_result = analyze_clarity(privacy_link)
+        else:
+            clarity_result = {
+                'flesch_kincaid_grade': None,
+                'flesch_reading_ease': None
+            }
         # Build the result dictionary
         result = {
             'url': url,
-            'privacy_policy': urljoin(url, privacy_link) if privacy_link else "Not Found",
-            'dnsmpi': urljoin(url, dnsmpi_link) if dnsmpi_link else "Not Found",
+            'privacy_policy': {
+                'link': privacy_link if privacy_link else "Not Found",
+                'accessible_within_two_clicks': privacy_accessible,
+                'clicks_required': privacy_clicks if privacy_accessible else None,
+                'flesch_kincaid_grade': clarity_result.get('flesch_kincaid_grade'),
+                'flesch_reading_ease': clarity_result.get('flesch_reading_ease')
+            },
+            'dnsmpi': {
+                'link': dnsmpi_link if dnsmpi_link else "Not Found",
+                'accessible_within_two_clicks': dnsmpi_accessible,
+                'clicks_required': dnsmpi_clicks if dnsmpi_accessible else None
+            }
         }
 
         # Save results in a JSON file
@@ -94,142 +176,122 @@ async def scrape_website(browser, url, retries=3):
 
         logger.info(f'Successfully scraped: {url}')
 
-        if not privacy_link:
-            logger.warning(f"No privacy policy found for {url}. Consider adding new patterns.")
-
     except Exception as e:
         logger.error(f"Failed to scrape {url}: {e}")
 
     finally:
         await page.close()
 
-# Random delay for rate limiting
-async def scrape_website_with_delay(browser, url, min_delay=3, max_delay=8):
-    await asyncio.sleep(random.uniform(min_delay, max_delay))
-    await scrape_website(browser, url)
-
-# Process URLs in batches
-async def process_in_batches(browser, urls, batch_size=10):
-    semaphore = asyncio.Semaphore(batch_size)
-
-    async def sem_task(url):
-        async with semaphore:
-            await scrape_website_with_delay(browser, url)
-
-    tasks = [sem_task(url) for url in urls]
-
-    for i in range(0, len(tasks), batch_size):
-        await asyncio.gather(*tasks[i:i + batch_size])
-
 # Main function
 async def main(urls):
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=True, args=["--disable-http2"])
-        await process_in_batches(browser, urls, batch_size=5)  # Reduced batch size for safer processing
+        browser = await playwright.chromium.launch(headless=True)
+        tasks = [scrape_website(browser, url) for url in urls]
+        await asyncio.gather(*tasks)
         await browser.close()
 
 # Example usage
 if __name__ == "__main__":
     urls = [
-  "google.com",
-  "facebook.com",
-  "instagram.com",
-  "wikipedia.org",
-  "yahoo.com",
-  "reddit.com",
-  "whatsapp.com",
-  "amazon.com",
-  "chatgpt.com",
-  "tiktok.com",
-  "bing.com",
-  "pinterest.com",
-  "twitter.com",
-  "linkedin.com",
-  "ebay.com",
-  "microsoft.com",
-  "netflix.com",
-  "espn.com",
-  "cnn.com",
-  "foxnews.com",
-  "bbc.com",
-  "disneyplus.com",
-  "spotify.com",
-  "twitch.tv",
-  "shopify.com",
-  "apple.com",
-  "adobe.com",
-  "medium.com",
-  "github.com",
-  "stackexchange.com",
-  "craigslist.org",
-  "zoom.us",
-  "indeed.com",
-  "accuweather.com",
-  "wordpress.com",
-  "yelp.com",
-  "homedepot.com",
-  "patreon.com",
-  "tumblr.com",
-  "deviantart.com",
-  "character.ai",
-  "messenger.com",
-  "snapchat.com",
-  "outbrain.com",
-  "fandom.com",
-  "theguardian.com",
-  "playstation.com",
-  "capitalone.com",
-  "figma.com",
-  "canva.com",
-  "deepl.com",
-  "paypal.com",
-  "booking.com",
-  "imdb.com",
-  "etsy.com",
-  "zillow.com",
-  "bbc.co.uk",
-  "hulu.com",
-  "target.com",
-  "lowes.com",
-  "wayfair.com",
-  "walmart.com",
-  "tripadvisor.com",
-  "kohls.com",
-  "macys.com",
-  "nytimes.com",
-  "usps.com",
-  "weather.com",
-  "forbes.com",
-  "bloomberg.com",
-  "reuters.com",
-  "npr.org",
-  "time.com",
-  "theatlantic.com",
-  "vox.com",
-  "wired.com",
-  "polygon.com",
-  "kotaku.com",
-  "sports.yahoo.com",
-  "bleacherreport.com",
-  "msnbc.com",
-  "nbcnews.com",
-  "abcnews.go.com",
-  "cbsnews.com",
-  "usatoday.com",
-  "latimes.com",
-  "chicagotribune.com",
-  "sfgate.com",
-  "houstonchronicle.com",
-  "philly.com",
-  "miamiherald.com",
-  "boston.com",
-  "detroitnews.com",
-  "denverpost.com",
-  "dallasnews.com",
-  "startribune.com",
-  "cleveland.com",
-  "slate.com",
-  "salon.com"
-]
-    asyncio.run(main(urls))
+        "google.com",
+        "facebook.com",
+        "instagram.com",
+        "wikipedia.org",
+        "yahoo.com",
+        "reddit.com",
+        "whatsapp.com",
+        "amazon.com",
+        "chatgpt.com",
+        "tiktok.com",
+        "bing.com",
+        "pinterest.com",
+        "twitter.com",
+        "linkedin.com",
+        "ebay.com",
+        "microsoft.com",
+        "netflix.com",
+        "espn.com",
+        "cnn.com",
+        "foxnews.com",
+        "bbc.com",
+        "disneyplus.com",
+        "spotify.com",
+        "twitch.tv",
+        "shopify.com",
+        "apple.com",
+        "adobe.com",
+        "medium.com",
+        "github.com",
+        "stackexchange.com",
+        "craigslist.org",
+        "zoom.us",
+        "indeed.com",
+        "accuweather.com",
+        "wordpress.com",
+        "yelp.com",
+        "homedepot.com",
+        "patreon.com",
+        "tumblr.com",
+        "deviantart.com",
+        "character.ai",
+        "messenger.com",
+        "snapchat.com",
+        "outbrain.com",
+        "fandom.com",
+        "theguardian.com",
+        "playstation.com",
+        "capitalone.com",
+        "figma.com",
+        "canva.com",
+        "deepl.com",
+        "paypal.com",
+        "booking.com",
+        "imdb.com",
+        "etsy.com",
+        "zillow.com",
+        "bbc.co.uk",
+        "hulu.com",
+        "target.com",
+        "lowes.com",
+        "wayfair.com",
+        "walmart.com",
+        "tripadvisor.com",
+        "kohls.com",
+        "macys.com",
+        "nytimes.com",
+        "usps.com",
+        "weather.com",
+        "forbes.com",
+        "bloomberg.com",
+        "reuters.com",
+        "npr.org",
+        "time.com",
+        "theatlantic.com",
+        "vox.com",
+        "wired.com",
+        "polygon.com",
+        "kotaku.com",
+        "sports.yahoo.com",
+        "bleacherreport.com",
+        "msnbc.com",
+        "nbcnews.com",
+        "abcnews.go.com",
+        "cbsnews.com",
+        "usatoday.com",
+        "latimes.com",
+        "chicagotribune.com",
+        "sfgate.com",
+        "houstonchronicle.com",
+        "philly.com",
+        "miamiherald.com",
+        "boston.com",
+        "detroitnews.com",
+        "denverpost.com",
+        "dallasnews.com",
+        "startribune.com",
+        "cleveland.com",
+        "slate.com",
+        "salon.com"
+    ]
 
+    asyncio.run(main(urls))

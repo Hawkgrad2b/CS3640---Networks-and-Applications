@@ -1,5 +1,15 @@
 {
     "url": "https://yelp.com",
-    "privacy_policy": "https://www.yelp.com/tos/privacy_policy",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.yelp.com/tos/privacy_policy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 10.0,
+        "flesch_reading_ease": 32.56
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

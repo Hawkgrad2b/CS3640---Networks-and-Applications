@@ -1,5 +1,15 @@
 {
     "url": "https://ebay.com",
-    "privacy_policy": "https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy?id=4260",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.ebay.com/help/policies/member-behaviour-policies/user-privacy-notice-privacy-policy?id=4260",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 12.5,
+        "flesch_reading_ease": 42.0
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }
