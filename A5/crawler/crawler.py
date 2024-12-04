@@ -64,6 +64,53 @@ async def fetch_link(page, keywords):
             logger.debug(f"Selector '{selector}' failed: {e}")
     return None
 
+async def monitor_fingerprinting(page):
+    """
+    Monitors for potential JavaScript fingerprinting behaviors and logs relevant activities.
+    Returns a summary of detected fingerprinting activity.
+    """
+    fingerprinting_data = {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": [],
+        "timing_calls": 0
+    }
+
+    async def intercept_canvas_call(route):
+        fingerprinting_data["canvas_calls"] += 1
+        await route.continue_()
+
+    async def intercept_webgl_call(route):
+        fingerprinting_data["webgl_calls"] += 1
+        await route.continue_()
+
+    async def log_navigator_properties(route, request):
+        if 'navigator.' in request.url:
+            prop = request.url.split('navigator.')[-1]
+            fingerprinting_data["navigator_properties"].append(prop)
+        await route.continue_()
+
+    async def monitor_timing_api(route):
+        if 'performance.now' in request.url:
+            fingerprinting_data["timing_calls"] += 1
+        await route.continue_()
+
+    # Intercepting network requests to monitor fingerprinting-related libraries
+    async def detect_external_libraries(route, request):
+        if any(lib in request.url for lib in ['fingerprintjs', 'fpjs', 'evercookie']):
+            fingerprinting_data["external_fingerprinting_libraries"].append(request.url)
+        await route.continue_()
+
+    # Adding event listeners for API interception
+    page.on("request", detect_external_libraries)
+    page.on("route", intercept_canvas_call)
+    page.on("route", intercept_webgl_call)
+    page.on("route", log_navigator_properties)
+    page.on("route", monitor_timing_api)
+
+    return fingerprinting_data
+
 # Enhanced error handling in scrape_website
 async def scrape_website(browser, url, retries=3):
     if not url.startswith("http://") and not url.startswith("https://"):
@@ -84,6 +131,7 @@ async def scrape_website(browser, url, retries=3):
             'url': url,
             'privacy_policy': urljoin(url, privacy_link) if privacy_link else "Not Found",
             'dnsmpi': urljoin(url, dnsmpi_link) if dnsmpi_link else "Not Found",
+            'fingerprinting': fingerprinting_summary
         }
 
         # Save results in a JSON file
