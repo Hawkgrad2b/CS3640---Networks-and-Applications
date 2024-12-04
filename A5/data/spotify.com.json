@@ -1,5 +1,15 @@
 {
     "url": "https://spotify.com",
-    "privacy_policy": "Not Found",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.spotify.com/us/safetyandprivacy/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 1,
+        "flesch_kincaid_grade": 15.1,
+        "flesch_reading_ease": 35.31
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

@@ -1,5 +1,15 @@
 {
     "url": "https://outbrain.com",
-    "privacy_policy": "https://www.outbrain.com/privacy",
-    "dnsmpi": "https://my.outbrain.com/recommendations-settings/"
+    "privacy_policy": {
+        "link": "https://www.outbrain.com/privacy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 10.0,
+        "flesch_reading_ease": 32.56
+    },
+    "dnsmpi": {
+        "link": "https://my.outbrain.com/recommendations-settings/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0
+    }
 }

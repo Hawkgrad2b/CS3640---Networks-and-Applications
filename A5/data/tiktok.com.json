@@ -1,5 +1,15 @@
 {
     "url": "https://tiktok.com",
-    "privacy_policy": "Not Found",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.tiktok.com/tag/privacyprotection",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 2,
+        "flesch_kincaid_grade": 1.3,
+        "flesch_reading_ease": 92.8
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

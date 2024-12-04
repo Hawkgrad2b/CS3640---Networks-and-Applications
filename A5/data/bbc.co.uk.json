@@ -1,0 +1,15 @@
+{
+    "url": "https://bbc.co.uk",
+    "privacy_policy": {
+        "link": "https://www.bbc.com/usingthebbc/privacy/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 10.1,
+        "flesch_reading_ease": 59.23
+    },
+    "dnsmpi": {
+        "link": "https://www.bbc.com/usingthebbc/cookies/how-can-i-change-my-bbc-cookie-settings/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0
+    }
+}

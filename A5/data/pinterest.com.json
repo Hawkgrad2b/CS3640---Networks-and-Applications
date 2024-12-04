@@ -1,5 +1,15 @@
 {
     "url": "https://pinterest.com",
-    "privacy_policy": "Not Found",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.pinterest.com/_/_/policy/privacy-policy/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 14.1,
+        "flesch_reading_ease": 38.05
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

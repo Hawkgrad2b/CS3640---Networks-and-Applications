@@ -1,5 +1,15 @@
 {
     "url": "https://capitalone.com",
-    "privacy_policy": "https://www.capitalone.com/privacy/",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.capitalone.com/privacy/",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 27.4,
+        "flesch_reading_ease": -2.09
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

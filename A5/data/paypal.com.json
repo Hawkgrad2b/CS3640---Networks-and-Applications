@@ -1,5 +1,15 @@
 {
     "url": "https://paypal.com",
-    "privacy_policy": "https://www.paypal.com/us/privacy-center/home",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.paypal.com/us/privacy-center/home",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 13.1,
+        "flesch_reading_ease": 40.58
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

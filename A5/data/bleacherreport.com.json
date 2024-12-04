@@ -1,5 +1,15 @@
 {
     "url": "https://bleacherreport.com",
-    "privacy_policy": "https://www.wbdprivacy.com/policycenter/b2c",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.wbdprivacy.com/policycenter/b2c",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 14.6,
+        "flesch_reading_ease": 36.63
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

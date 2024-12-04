@@ -1,5 +1,15 @@
 {
     "url": "https://character.ai",
-    "privacy_policy": "https://character.ai/privacy",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://character.ai/privacy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 9.2,
+        "flesch_reading_ease": 45.42
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

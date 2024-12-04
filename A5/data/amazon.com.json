@@ -1,5 +1,15 @@
 {
     "url": "https://amazon.com",
-    "privacy_policy": "https://www.amazon.com/gp/help/customer/display.html?nodeId=468496&ref_=footer_privacy",
-    "dnsmpi": "Not Found"
+    "privacy_policy": {
+        "link": "https://www.amazon.com/gp/help/customer/display.html?nodeId=468496&ref_=footer_privacy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 3.7,
+        "flesch_reading_ease": 75.88
+    },
+    "dnsmpi": {
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null
+    }
 }

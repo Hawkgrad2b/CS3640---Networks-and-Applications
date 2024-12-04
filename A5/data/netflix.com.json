@@ -1,5 +1,15 @@
 {
     "url": "https://netflix.com",
-    "privacy_policy": "https://help.netflix.com/legal/privacy",
-    "dnsmpi": "https://www.netflix.com/dnsspi"
+    "privacy_policy": {
+        "link": "https://help.netflix.com/legal/privacy",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0,
+        "flesch_kincaid_grade": 17.9,
+        "flesch_reading_ease": 22.79
+    },
+    "dnsmpi": {
+        "link": "https://www.netflix.com/dnsspi",
+        "accessible_within_two_clicks": true,
+        "clicks_required": 0
+    }
 }
