@@ -2,10 +2,12 @@ import asyncio
 from playwright.async_api import async_playwright
 import json
 import os
-import random
 import logging
-import traceback
 from urllib.parse import urljoin
+import requests
+from bs4 import BeautifulSoup
+import textstat
+from bs4.element import Comment
 
 # Configure logging
 logging.basicConfig(
@@ -15,9 +17,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Keywords for finding privacy policy links
-PRIVACY_POLICY_KEYWORDS = ['privacy policy', 'Privacy', 'cookie policy', 'privacy policy', 'New Privacy Policy', 'legal privacy', 'data protection']
-DNSMPI_KEYWORDS = ['DNSMPI', 'do not share', 'sell my personal information', 'Share My Personal Data', 'Do not sell or share my personal information']
+# Keywords for finding privacy policy and DNSMPI links
+PRIVACY_POLICY_KEYWORDS = [
+    'privacy policy', 'Privacy', 'cookie policy', 'New Privacy Policy', 'legal privacy', 'data protection'
+]
+DNSMPI_KEYWORDS = [
+    'DNSMPI', 'do not share', 'sell my personal information', 'Share My Personal Data',
+    'Do not sell or share my personal information'
+]
 
 # Base directory and output folder
 BASE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -28,110 +35,177 @@ os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 def build_xpath_selectors(keywords):
     selectors = []
     for keyword in keywords:
-         selectors.extend([
-            f'//a[contains(text(), "{keyword}")]',                    # Text-based
-            f'//a[contains(@aria-label, "{keyword}")]',               # ARIA labels
-            f'//a[contains(@data-omtr-intcmp, "{keyword}")]',         # Data-omtr-intcmp attributes
-            f'//a[contains(@id, "{keyword.lower()}")]',               # ID-based
-            f'//a[contains(@href, "{keyword.lower()}")]',             # HREF-based
-            f'//a[@role="link" and contains(text(), "{keyword}")]',  # Role-based
+        selectors.extend([
+            f'//a[contains(translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
+            f'//a[contains(translate(@aria-label, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
+            f'//a[contains(translate(@id, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
+            f'//a[contains(translate(@href, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
+            f'//a[@role="link" and contains(translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "{keyword.lower()}")]',
         ])
     return selectors
 
-# Refactored fetch_link function with prioritized selectors
+# Function to fetch the link from a website based on the keywords
 async def fetch_link(page, keywords):
-    # Search for a matching link based on CSS and XPath selectors.
-    css_selectors = [f'a:has-text("{keyword}")' for keyword in keywords]
-    xpath_selectors = build_xpath_selectors(keywords)
-    all_selectors = css_selectors + xpath_selectors
-
-    for selector in all_selectors:
+    selectors = build_xpath_selectors(keywords)
+    for selector in selectors:
         try:
-            # Locate the element
-            element = page.locator(selector).first
-            if await element.is_visible():
-                # Extract the href attribute
-                link = await element.get_attribute('href')
-                if link:
-                    # Ensure absolute URL
-                    if link.startswith("//"):
-                        link = "https:" + link
-                    elif link.startswith("/"):
-                        link = urljoin(page.url, link)
-                    return link
-                
-        except Exception as e:
-            logger.debug(f"Selector '{selector}' failed: {e}")
+            element = await page.query_selector(selector)
+            if element:
+                href = await element.get_attribute('href')
+                if href:
+                    return urljoin(page.url, href)
+        except Exception:
+            continue
     return None
 
+# Helper function to filter visible text
+def tag_visible(element):
+    if isinstance(element, Comment):
+        return False
+    if element.parent.name in ['style', 'script', 'head', 'meta', '[document]', 'noscript']:
+        return False
+    return True
+
+# Function to analyze clarity of the privacy policy
+def analyze_clarity(policy_url):
+    try:
+        response = requests.get(policy_url, timeout=10)
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        # Extract visible text
+        texts = soup.find_all(text=True)
+        visible_texts = filter(tag_visible, texts)
+        text = u" ".join(t.strip() for t in visible_texts)
+
+        # Calculate readability scores
+        fk_grade = textstat.flesch_kincaid_grade(text)
+        fre_score = textstat.flesch_reading_ease(text)
+
+        # Record results
+        result = {
+            'flesch_kincaid_grade': fk_grade,
+            'flesch_reading_ease': fre_score
+        }
+        return result
+    except Exception as e:
+        logger.error(f"Error analyzing clarity for {policy_url}: {e}")
+        return {
+            'flesch_kincaid_grade': None,
+            'flesch_reading_ease': None
+        }
+
+async def assess_accessibility(page, link_keywords):
+    accessible = False
+    clicks_required = None  # Initialize to None
+    link_href = None
+
+    # Try to find the link on the homepage
+    link_href = await fetch_link(page, link_keywords)
+    if link_href:
+        accessible = True
+        clicks_required = 0  # Found on homepage
+    else:
+        # Try navigating through clickable elements (simulate up to two clicks)
+        max_clicks = 2
+        for clicks in range(1, max_clicks + 1):
+            clickable_elements = await page.query_selector_all('a')
+            for element in clickable_elements:
+                try:
+                    await element.click(timeout=2000)
+                    link_href = await fetch_link(page, link_keywords)
+                    if link_href:
+                        accessible = True
+                        clicks_required = clicks  # Set clicks_required here
+                        break
+                    await page.go_back()
+                except Exception:
+                    continue
+            if accessible:
+                break
+    return link_href, accessible, clicks_required
+
+# Function to monitor JavaScript fingerprinting-related activity
 async def monitor_fingerprinting(page):
-    """
-    Monitors for potential JavaScript fingerprinting behaviors and logs relevant activities.
-    Returns a summary of detected fingerprinting activity.
-    """
     fingerprinting_data = {
         "canvas_calls": 0,
         "webgl_calls": 0,
         "navigator_properties": [],
         "external_fingerprinting_libraries": [],
-        "timing_calls": 0
     }
 
-    async def intercept_canvas_call(route):
-        fingerprinting_data["canvas_calls"] += 1
+    async def intercept_requests(route):
+        url = route.request.url
+        if any(x in url for x in ["fingerprintjs", "fpjs", "evercookie"]):
+            fingerprinting_data["external_fingerprinting_libraries"].append(url)
         await route.continue_()
 
-    async def intercept_webgl_call(route):
-        fingerprinting_data["webgl_calls"] += 1
-        await route.continue_()
+    page.on("request", intercept_requests)
 
-    async def log_navigator_properties(route, request):
-        if 'navigator.' in request.url:
-            prop = request.url.split('navigator.')[-1]
-            fingerprinting_data["navigator_properties"].append(prop)
-        await route.continue_()
+    # Check for Canvas and WebGL API usage
+    await page.expose_function("interceptCanvas", lambda: fingerprinting_data.update({"canvas_calls": fingerprinting_data["canvas_calls"] + 1}))
+    await page.expose_function("interceptWebGL", lambda: fingerprinting_data.update({"webgl_calls": fingerprinting_data["webgl_calls"] + 1}))
+    
+    await page.add_init_script("""
+        const originalCanvasToDataURL = HTMLCanvasElement.prototype.toDataURL;
+        HTMLCanvasElement.prototype.toDataURL = function() {
+            window.interceptCanvas();
+            return originalCanvasToDataURL.apply(this, arguments);
+        };
 
-    async def monitor_timing_api(route):
-        if 'performance.now' in request.url:
-            fingerprinting_data["timing_calls"] += 1
-        await route.continue_()
-
-    # Intercepting network requests to monitor fingerprinting-related libraries
-    async def detect_external_libraries(route, request):
-        if any(lib in request.url for lib in ['fingerprintjs', 'fpjs', 'evercookie']):
-            fingerprinting_data["external_fingerprinting_libraries"].append(request.url)
-        await route.continue_()
-
-    # Adding event listeners for API interception
-    page.on("request", detect_external_libraries)
-    page.on("route", intercept_canvas_call)
-    page.on("route", intercept_webgl_call)
-    page.on("route", log_navigator_properties)
-    page.on("route", monitor_timing_api)
+        const originalGetParameter = WebGLRenderingContext.prototype.getParameter;
+        WebGLRenderingContext.prototype.getParameter = function() {
+            window.interceptWebGL();
+            return originalGetParameter.apply(this, arguments);
+        };
+    """)
 
     return fingerprinting_data
 
-# Enhanced error handling in scrape_website
-async def scrape_website(browser, url, retries=3):
+# Enhanced scrape_website function
+async def scrape_website(browser, url):
     if not url.startswith("http://") and not url.startswith("https://"):
         url = "https://" + url
 
-    context = await browser.new_context()
-    page = await context.new_page()
+    page = await browser.new_page()
 
     try:
-        await page.goto(url, timeout=60000)  # Timeout set to 60 seconds
+        await page.goto(url, timeout=60000)
         await page.wait_for_load_state('domcontentloaded')
 
-        privacy_link = await fetch_link(page, PRIVACY_POLICY_KEYWORDS)
-        dnsmpi_link = await fetch_link(page, DNSMPI_KEYWORDS)
+        # Assess accessibility for Privacy Policy link
+        privacy_link, privacy_accessible, privacy_clicks = await assess_accessibility(page, PRIVACY_POLICY_KEYWORDS)
+
+        # Assess accessibility for DNSMPI link
+        dnsmpi_link, dnsmpi_accessible, dnsmpi_clicks = await assess_accessibility(page, DNSMPI_KEYWORDS)
+
+        # Analyze clarity if privacy policy link is found
+        if privacy_link:
+            clarity_result = analyze_clarity(privacy_link)
+        else:
+            clarity_result = {
+                'flesch_kincaid_grade': None,
+                'flesch_reading_ease': None
+            }
+
+        # Monitor fingerprinting
+        fingerprinting_data = await monitor_fingerprinting(page)
 
         # Build the result dictionary
         result = {
             'url': url,
-            'privacy_policy': urljoin(url, privacy_link) if privacy_link else "Not Found",
-            'dnsmpi': urljoin(url, dnsmpi_link) if dnsmpi_link else "Not Found",
-            'fingerprinting': fingerprinting_summary
+            'privacy_policy': {
+                'link': privacy_link if privacy_link else "Not Found",
+                'accessible_within_two_clicks': privacy_accessible,
+                'clicks_required': privacy_clicks if privacy_accessible else None,
+                'flesch_kincaid_grade': clarity_result.get('flesch_kincaid_grade'),
+                'flesch_reading_ease': clarity_result.get('flesch_reading_ease')
+            },
+            'dnsmpi': {
+                'link': dnsmpi_link if dnsmpi_link else "Not Found",
+                'accessible_within_two_clicks': dnsmpi_accessible,
+                'clicks_required': dnsmpi_clicks if dnsmpi_accessible else None
+            },
+            'fingerprinting': fingerprinting_data
         }
 
         # Save results in a JSON file
@@ -142,38 +216,18 @@ async def scrape_website(browser, url, retries=3):
 
         logger.info(f'Successfully scraped: {url}')
 
-        if not privacy_link:
-            logger.warning(f"No privacy policy found for {url}. Consider adding new patterns.")
-
     except Exception as e:
         logger.error(f"Failed to scrape {url}: {e}")
 
     finally:
         await page.close()
 
-# Random delay for rate limiting
-async def scrape_website_with_delay(browser, url, min_delay=3, max_delay=8):
-    await asyncio.sleep(random.uniform(min_delay, max_delay))
-    await scrape_website(browser, url)
-
-# Process URLs in batches
-async def process_in_batches(browser, urls, batch_size=10):
-    semaphore = asyncio.Semaphore(batch_size)
-
-    async def sem_task(url):
-        async with semaphore:
-            await scrape_website_with_delay(browser, url)
-
-    tasks = [sem_task(url) for url in urls]
-
-    for i in range(0, len(tasks), batch_size):
-        await asyncio.gather(*tasks[i:i + batch_size])
-
 # Main function
 async def main(urls):
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(headless=True, args=["--disable-http2"])
-        await process_in_batches(browser, urls, batch_size=5)  # Reduced batch size for safer processing
+        browser = await playwright.chromium.launch(headless=True)
+        tasks = [scrape_website(browser, url) for url in urls]
+        await asyncio.gather(*tasks)
         await browser.close()
 
 # Example usage
