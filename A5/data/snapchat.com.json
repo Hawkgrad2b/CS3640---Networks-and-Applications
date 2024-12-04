@@ -4,12 +4,18 @@
         "link": "https://snap.com/privacy/privacy-policy",
         "accessible_within_two_clicks": true,
         "clicks_required": 0,
-        "flesch_kincaid_grade": 12.1,
-        "flesch_reading_ease": 48.54
+        "flesch_kincaid_grade": -3.5,
+        "flesch_reading_ease": 121.22
     },
     "dnsmpi": {
         "link": "Not Found",
         "accessible_within_two_clicks": false,
         "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
     }
 }

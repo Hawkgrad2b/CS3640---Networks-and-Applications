@@ -1,15 +1,21 @@
 {
     "url": "https://tiktok.com",
     "privacy_policy": {
-        "link": "https://www.tiktok.com/tag/privacyprotection",
-        "accessible_within_two_clicks": true,
-        "clicks_required": 2,
-        "flesch_kincaid_grade": 1.3,
-        "flesch_reading_ease": 92.8
+        "link": "Not Found",
+        "accessible_within_two_clicks": false,
+        "clicks_required": null,
+        "flesch_kincaid_grade": null,
+        "flesch_reading_ease": null
     },
     "dnsmpi": {
         "link": "Not Found",
         "accessible_within_two_clicks": false,
         "clicks_required": null
+    },
+    "fingerprinting": {
+        "canvas_calls": 0,
+        "webgl_calls": 0,
+        "navigator_properties": [],
+        "external_fingerprinting_libraries": []
     }
 }
