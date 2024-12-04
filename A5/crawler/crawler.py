@@ -217,7 +217,8 @@ async def scrape_website(browser, url):
                 'accessible_within_two_clicks': dnsmpi_accessible,
                 'clicks_required': dnsmpi_clicks if dnsmpi_accessible else None
             },
-            'fingerprinting': fingerprinting_data
+            'fingerprinting': fingerprinting_data if fingerprinting_data else "No Readings"
+            
         }
 
         # Save results in a JSON file
